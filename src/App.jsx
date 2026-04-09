@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   AlertTriangle,
   ArrowRight,
@@ -375,6 +376,9 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState(0);
   const [formData, setFormData] = useState(FORM_INITIAL_STATE);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [hcaptchaToken, setHCaptchaToken] = useState("");
+  const [hcaptchaError, setHCaptchaError] = useState("");
+  const hcaptchaRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -399,12 +403,24 @@ export default function App() {
     if (formSuccess) {
       setFormSuccess(false);
     }
+
+    if (hcaptchaError) {
+      setHCaptchaError("");
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!hcaptchaToken) {
+      setHCaptchaError("Por favor confirma o captcha antes de enviar.");
+      return;
+    }
+
     setFormSuccess(true);
     setFormData(FORM_INITIAL_STATE);
+    setHCaptchaToken("");
+    hcaptchaRef.current?.resetCaptcha?.();
   };
 
   return (
@@ -844,6 +860,23 @@ export default function App() {
                     placeholder="Conta-nos como gostarias de colaborar."
                   />
                 </label>
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <HCaptcha
+                    sitekey={import.meta.env.VITE_HCAPTCHA_SITEKEY}
+                    onVerify={(token) => {
+                      setHCaptchaToken(token);
+                      setHCaptchaError("");
+                    }}
+                    onExpire={() => setHCaptchaToken("")}
+                    ref={hcaptchaRef}
+                    size="normal"
+                    theme={theme}
+                  />
+                </div>
+                {hcaptchaError ? (
+                  <p className="text-sm text-rose-500">{hcaptchaError}</p>
+                ) : null}
 
                 <button
                   type="submit"
