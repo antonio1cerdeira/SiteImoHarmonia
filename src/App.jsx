@@ -1,272 +1,476 @@
-﻿import { useEffect, useState } from "react";
-import { AnimatePresence, motion as Motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertTriangle,
   ArrowRight,
   BadgeCheck,
-  BrainCircuit,
-  Building2,
-  Clock3,
-  Coins,
-  Code2,
-  FileCheck2,
+  Bot,
+  BookOpen,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  FileText,
+  FileOutput,
   FileSearch,
-  Files,
-  GraduationCap,
   Landmark,
-  Layers3,
+  Mail,
   MapPinned,
-  Megaphone,
   Menu,
-  Palette,
+  Moon,
   ScanSearch,
+  Search,
   ShieldCheck,
-  Sparkles,
   Sun,
   Trophy,
-  Users,
+  Upload,
+  UserRound,
   X,
-  Moon,
+  Zap,
 } from "lucide-react";
 
-const navItems = [
-  ["#sobre", "Sobre"],
-  ["#problema", "Problema"],
-  ["#funcionamento", "Como funciona"],
-  ["#funcionalidades", "Funcionalidades"],
-  ["#poliempreende", "Poliempreende 2025"],
-  ["#equipa", "Equipa"],
+const Motion = motion;
+
+const navLinks = [
+  { href: "#problema", label: "Problema" },
+  { href: "#solucao", label: "Solução" },
+  { href: "#funcionalidades", label: "Funcionalidades" },
+  { href: "#contacto", label: "Contacto" },
 ];
 
-const metrics = [
-  ["IA aplicada", "Interpretação assistida de PDM e regulamentos urbanos"],
-  ["Leitura clara", "Menos ambiguidade para decisões técnicas mais rápidas"],
-  ["Foco prático", "Pensado para arquitetos, engenheiros e urbanistas"],
-];
-
-const problems = [
-  [Layers3, "Complexidade normativa", "Regulamentos extensos acumulam artigos, condicionantes e exceções difíceis de cruzar rapidamente."],
-  [Landmark, "Burocracia técnica", "A leitura manual de legislação obriga a validações sucessivas antes de avançar com um projeto."],
-  [FileSearch, "Interpretação difícil", "Mesmo profissionais experientes enfrentam ambiguidades na leitura das regras aplicáveis."],
-  [Clock3, "Consumo de tempo", "Arquitetos e engenheiros passam horas a consolidar informação dispersa em vários documentos."],
+const problemCards = [
+  {
+    title: "PDMs extensos e de difícil interpretação",
+    description:
+      "Centenas de páginas de regulamentação local que variam de município para município.",
+  },
+  {
+    title: "Erros custam tempo e dinheiro",
+    description:
+      "Um erro de interpretação regulamentar pode atrasar meses um projeto e gerar custos inesperados.",
+  },
+  {
+    title: "Profissionais sobrecarregados",
+    description:
+      "Arquitetos e engenheiros gastam horas em verificações que poderiam ser automatizadas.",
+  },
 ];
 
 const steps = [
-  [BrainCircuit, "01", "Análise automática de regulamentos com Inteligência Artificial", "A plataforma processa regulamentos urbanísticos e destaca o que é relevante para acelerar a leitura técnica."],
-  [MapPinned, "02", "Identificação de permissões e restrições urbanísticas", "As regras surgem organizadas por permissões, limitações e condicionantes para reduzir interpretação dispersa."],
-  [Files, "03", "Apoio na criação de documentação técnica", "A informação consolidada ajuda a estruturar documentação com mais consistência e menos margem para erro."],
-];
-
-const features = [
-  [ScanSearch, "Análise inteligente de PDM", "Leitura orientada por IA para encontrar rapidamente normas relevantes em documentos extensos."],
-  [Sparkles, "Interpretação automática de normas", "Transforma linguagem regulamentar complexa em informação mais clara e operacional."],
-  [ShieldCheck, "Identificação de restrições urbanísticas", "Sinaliza limitações, condicionantes e requisitos com leitura mais direta."],
-  [Building2, "Apoio a arquitetos e engenheiros", "Organiza contexto técnico útil para decisões mais rápidas ao longo do projeto."],
-  [FileCheck2, "Redução de erros em projetos", "Menos interpretação manual repetitiva significa mais consistência na preparação técnica."],
-];
-
-const achievements = [
-  [Trophy, "Vitória regional", "O projeto venceu a fase regional do Poliempreende 2025."],
-  [Coins, "Prémio monetário", "Recebeu um prémio de 2000€ para acelerar o desenvolvimento."],
-  [GraduationCap, "Final nacional", "Representará o Instituto Politécnico da Guarda na Universidade de Aveiro."],
-];
-
-const teamAreas = [
-  [Code2, "Engenharia Informática"],
-  [Palette, "Design"],
-  [Megaphone, "Marketing"],
-  [Users, "Comunicação"],
-  [BadgeCheck, "Gestão de Recursos Humanos"],
-];
-
-const faqs = [
-  [
-    "O que é o Imo Harmonia?",
-    "O Imo Harmonia é uma plataforma que utiliza Inteligência Artificial para simplificar a interpretação de Planos Diretores Municipais e regulamentos urbanísticos.",
-  ],
-  [
-    "A quem se destina o projeto?",
-    "O projeto foi pensado para arquitetos, engenheiros e profissionais ligados ao urbanismo que precisam de analisar regras, permissões e restrições com maior clareza.",
-  ],
-  [
-    "Qual é o principal objetivo da plataforma?",
-    "O objetivo é reduzir a complexidade da leitura regulamentar, poupar tempo na análise técnica e tornar a informação urbanística mais acessível.",
-  ],
-  [
-    "Qual é a origem do projeto?",
-    "O Imo Harmonia foi desenvolvido por estudantes do Instituto Politécnico da Guarda e distinguido no âmbito do Poliempreende 2025.",
-  ],
-];
-
-const mockupScreens = [
   {
-    id: "dashboard",
-    label: "Dashboard",
-    src: "/Fotos/Dashboad.png",
-    alt: "Mockup do dashboard da plataforma Imo Harmonia",
+    icon: Upload,
+    title: "Upload",
+    description: "Carrega o PDM ou projeto em PDF",
   },
   {
-    id: "Login",
-    label: "Login",
-    src: "/Fotos/login.png",
-    alt: "Mockup de Login da plataforma Imo Harmonia",
+    icon: BookOpen,
+    title: "Leitura",
+    description: "A IA interpreta e estrutura o documento",
   },
   {
-    id: "projetos",
-    label: "Projetos",
-    src: "/Fotos/Projetos.png",
-    alt: "Mockup da vista de projetos da plataforma Imo Harmonia",
+    icon: Search,
+    title: "Extração",
+    description: "Factos e regras são extraídos automaticamente",
   },
   {
-    id: "precheck",
-    label: "PreCheck",
-    src: "/Fotos/PreCheck.png",
-    alt: "Mockup da funcionalidade PreCheck da plataforma Imo Harmonia",
+    icon: ShieldCheck,
+    title: "Validação",
+    description: "Conformidade verificada contra regras locais",
+  },
+  {
+    icon: FileText,
+    title: "Relatório",
+    description: "Resultado claro, auditável e exportável",
   },
 ];
 
-const motionProps = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+const featureCards = [
+  {
+    icon: Bot,
+    title: "Leitura automática de PDM",
+    description:
+      "Processamento de documentos regulamentares em linguagem natural.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Verificação de conformidade",
+    description:
+      "Motor de regras que valida parâmetros urbanísticos automaticamente.",
+  },
+  {
+    icon: FileOutput,
+    title: "Relatórios exportáveis",
+    description: "Outputs claros, estruturados e prontos para uso profissional.",
+  },
+  {
+    icon: MapPinned,
+    title: "Contexto municipal",
+    description: "Adaptado às especificidades de cada município português.",
+  },
+  {
+    icon: FileSearch,
+    title: "Evidência rastreável",
+    description: "Cada conclusão ligada ao trecho exato do regulamento.",
+  },
+  {
+    icon: Zap,
+    title: "Velocidade real",
+    description: "Análises que demoram dias, concluídas em minutos.",
+  },
+];
+
+const faqItems = [
+  {
+    question: "O Imo Harmonia já está disponível?",
+    answer:
+      "O projeto está em desenvolvimento académico no IPG. Acompanha a nossa evolução.",
+  },
+  {
+    question: "Para que perfis profissionais é indicado?",
+    answer:
+      "Arquitetos, engenheiros, técnicos de urbanismo e todos os profissionais que lidam com regulamentação PDM.",
+  },
+  {
+    question: "Como funciona a análise por IA?",
+    answer:
+      "A plataforma processa documentos PDF, extrai regras e valida parâmetros de forma automática e auditável.",
+  },
+  {
+    question: "Que municípios são suportados?",
+    answer:
+      "O MVP foca-se em municípios da região da Guarda, com expansão progressiva prevista.",
+  },
+  {
+    question: "É possível colaborar com o projeto?",
+    answer: "Sim. Entra em contacto através do formulário abaixo.",
+  },
+];
+
+const trustItems = [
+  { icon: Landmark, label: "Projeto académico IPG" },
+  { icon: Bot, label: "IA aplicada ao urbanismo" },
+  { icon: Trophy, label: "Poliempreende 2025" },
+];
+
+const mockupChecks = [
+  { icon: Check, text: "Índice de ocupação: conforme", tone: "success" },
+  { icon: Check, text: "Afastamentos mínimos: conforme", tone: "success" },
+  {
+    icon: AlertTriangle,
+    text: "Altura máxima: verificar",
+    tone: "warning",
+  },
+];
+
+const FORM_INITIAL_STATE = {
+  nome: "",
+  email: "",
+  perfil: "Arquiteto",
+  mensagem: "",
 };
 
-function Reveal({ children, className = "", delay = 0 }) {
+const sectionReveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const heroGroup = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const heroItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+function LogoMark({ theme }) {
   return (
-    <Motion.div className={className} {...motionProps} transition={{ ...motionProps.transition, delay }}>
-      {children}
-    </Motion.div>
+    <img
+      src="/Fotos/logo.png"
+      alt="Imo Harmonia logo"
+      className="h-11 w-11 rounded-[15px] object-cover"
+      style={{ filter: theme === "dark" ? "brightness(0) invert(1)" : "none" }}
+    />
   );
 }
 
-function SectionTitle({ eyebrow, title, text }) {
+function SectionHeading({ label, title, description, centered = false }) {
+  const alignment = centered
+    ? "mx-auto max-w-4xl text-center"
+    : "max-w-4xl";
+
   return (
-    <Reveal className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
-      <span className="badge-pill">{eyebrow}</span>
-      <h2 className="mt-6 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">{title}</h2>
-      <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">{text}</p>
-    </Reveal>
+    <motion.div
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.35 }}
+      className={alignment}
+    >
+      <p className="text-xs font-[500] uppercase tracking-[0.08em] text-[var(--text-muted)]">
+        {label}
+      </p>
+      <h2
+        className="mt-4 font-display text-[clamp(2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]"
+        style={{ textWrap: "balance" }}
+      >
+        {title}
+      </h2>
+      {description ? (
+        <p className="mt-5 text-lg leading-8 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]">
+          {description}
+        </p>
+      ) : null}
+    </motion.div>
   );
 }
 
-function SmartCityPreview({ activeMockup, setActiveMockup }) {
+function HeroMockup() {
   return (
-    <Reveal className="relative mx-auto w-full max-w-[720px]" delay={0.15}>
-      <div className="absolute left-4 top-8 h-40 w-40 rounded-full bg-cyan-300/35 blur-3xl" />
-      <div className="absolute right-6 top-2 h-44 w-44 rounded-full bg-violet-300/30 blur-3xl" />
-      <div className="absolute bottom-10 left-1/3 h-36 w-36 rounded-full bg-sky-200/35 blur-3xl" />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="relative z-0 mx-auto w-full max-w-[480px] lg:justify-self-end xl:max-w-[520px]"
+    >
+      <div className="overflow-hidden rounded-[12px] border border-[var(--border)] bg-[var(--surface)] p-5 dark:bg-[var(--surface-dark)]">
+        <div className="flex items-center justify-between gap-4 border-b border-[var(--border)] pb-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
+              MOTOR REGULATÓRIO
+            </p>
+            <h3 className="mt-2 text-[18px] font-[600] text-[var(--text)] dark:text-[var(--text-dark)]">
+              Análise PDM
+            </h3>
+          </div>
+          <span className="inline-flex items-center gap-2 text-[11px] font-[500] text-[rgba(74,222,128,1)]">
+            <span className="h-2.5 w-2.5 rounded-full bg-[rgba(74,222,128,1)] pulse-dot" />
+            Em curso
+          </span>
+        </div>
 
-      <div className="relative">
-        <Motion.div
-          className="overflow-hidden rounded-[32px] border border-white/70 bg-white/78 p-3 shadow-[0_32px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/78 dark:shadow-[0_32px_90px_rgba(2,6,23,0.38)]"
-          initial={{ opacity: 0, y: 24, scale: 0.97 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, delay: 0.2 }}
-          key={activeMockup.id}
-        >
-          <img
-            src={activeMockup.src}
-            alt={activeMockup.alt}
-            className="w-full rounded-[24px] border border-slate-200/70 shadow-[0_18px_45px_rgba(15,23,42,0.12)] dark:border-white/10"
-          />
-        </Motion.div>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {mockupScreens.map((screen, index) => {
-            const isActive = screen.id === activeMockup.id;
+        <motion.div variants={heroGroup} initial="hidden" animate="visible" className="mt-5 space-y-3">
+          {mockupChecks.map((item) => {
+            const Icon = item.icon;
+            const isWarning = item.tone === "warning";
 
             return (
-              <Motion.button
-                key={screen.id}
-                type="button"
-                onClick={() => setActiveMockup(screen)}
-                className={`overflow-hidden rounded-[24px] border p-2 text-left transition ${
-                  isActive
-                    ? "border-cyan-300 bg-white shadow-[0_18px_45px_rgba(34,211,238,0.18)] dark:border-cyan-400/40 dark:bg-slate-900"
-                    : "border-white/70 bg-white/70 shadow-[0_16px_35px_rgba(15,23,42,0.1)] hover:-translate-y-1 dark:border-white/10 dark:bg-slate-900/70"
-                }`}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: 0.28 + index * 0.06 }}
+              <motion.div
+                key={item.text}
+                variants={heroItem}
+                className="flex items-center gap-3 rounded-[12px] border border-[rgba(0,0,0,0.06)] bg-[rgba(0,0,0,0.04)] px-4 py-3 dark:border-[var(--border-dark)] dark:bg-[rgba(255,255,255,0.04)]"
               >
-                <img
-                  src={screen.src}
-                  alt={screen.alt}
-                  className="w-full rounded-[18px] border border-slate-200/70 dark:border-white/10"
-                />
-                <div className="px-2 pb-1 pt-3">
-                  <p className="text-sm font-semibold text-slate-950 dark:text-slate-100">{screen.label}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.22em] text-slate-400">
-                    {isActive ? "Vista ativa" : "Clique para ver"}
+                <span
+                  className={`grid h-4 w-4 place-items-center rounded-[6px] ${
+                    isWarning
+                      ? "bg-[rgba(251,191,36,0.24)] text-[rgba(251,191,36,1)]"
+                      : "bg-[rgba(74,222,128,0.24)] text-[rgba(74,222,128,1)]"
+                  }`}
+                >
+                  <Icon className="h-3 w-3" />
+                </span>
+                <div className="min-w-0 text-left">
+                  <p className="text-sm font-[600] text-[var(--text)] sm:text-[15px] dark:text-[var(--text-dark)]">{item.text}</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.56)]">
+                    {isWarning ? "Verificar" : "Conforme"}
                   </p>
                 </div>
-              </Motion.button>
+              </motion.div>
             );
           })}
+        </motion.div>
+
+        <div className="mt-6 border-t border-[rgba(0,0,0,0.06)] pt-4 dark:border-[var(--border-dark)]">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm font-[400] text-[var(--text)] dark:text-[var(--text-dark)]">
+              Relatório gerado em 4.2s
+            </p>
+            <span className="rounded-full border border-[rgba(0,0,0,0.08)] px-3 py-1 text-[11px] font-[500] text-[var(--text)] dark:border-[var(--border-dark)] dark:text-[var(--text-dark)]">
+              Auditável
+            </span>
+          </div>
         </div>
       </div>
-    </Reveal>
+    </motion.div>
+  );
+}
+
+function FaqItem({ item, isOpen, onToggle }) {
+  return (
+    <motion.div
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25 }}
+      className="overflow-hidden rounded-[24px] border border-[var(--border)] bg-[rgba(255,255,255,0.04)] transition-colors duration-300 dark:border-[var(--border-dark)] dark:bg-[rgba(255,255,255,0.05)]"
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
+      >
+        <span className="pr-4 text-base font-semibold text-[var(--text)] dark:text-[var(--text-dark)] sm:text-lg">
+          {item.question}
+        </span>
+        <ChevronDown
+          className={`h-5 w-5 shrink-0 text-[var(--text-muted)] transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen ? (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="border-t border-[var(--border)] px-5 py-5 text-[15px] leading-7 text-[var(--text-muted)] dark:border-[var(--border-dark)] dark:text-[rgba(240,239,233,0.68)] sm:px-6">
+              {item.answer}
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeMockup, setActiveMockup] = useState(mockupScreens[0]);
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "light";
-    const savedTheme = window.localStorage.getItem("imo-harmonia-theme");
-    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+    const storedTheme = window.localStorage.getItem("imo-harmonia-theme");
+
+    if (storedTheme === "dark" || storedTheme === "light") {
+      return storedTheme;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [formData, setFormData] = useState(FORM_INITIAL_STATE);
+  const [formSuccess, setFormSuccess] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("imo-harmonia-theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const closeMenu = () => setMobileMenuOpen(false);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({ ...current, [name]: value }));
+
+    if (formSuccess) {
+      setFormSuccess(false);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setFormSuccess(true);
+    setFormData(FORM_INITIAL_STATE);
+  };
+
   return (
-    <div className={`relative overflow-x-hidden ${theme === "dark" ? "dark" : ""}`}>
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.22),transparent_32%),radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.95),rgba(245,248,255,0.6),transparent)]" />
-      <header className="fixed inset-x-0 top-0 z-[80] w-full border-b border-white/60 bg-white/70 backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8">
-          <a href="#topo" className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center">
-              <img
-                src="/Fotos/logo.png"
-                alt="Logótipo Imo Harmonia"
-                className="h-8 w-8 object-contain dark:brightness-0 dark:invert"
-              />
-            </div>
+    <div className="relative overflow-x-hidden bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 dark:bg-[var(--bg-dark)] dark:text-[var(--text-dark)]">
+
+
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-[var(--border)] bg-[rgba(249,249,249,0.96)] dark:border-[var(--border-dark)] dark:bg-[rgba(13,13,18,0.95)]"
+            : "border-b border-[var(--border)] bg-[rgba(249,249,249,0.88)] dark:border-[var(--border-dark)] dark:bg-[rgba(13,13,18,0.85)]"
+        }`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-6 lg:px-8">
+          <a href="#topo" className="flex items-center gap-3" onClick={closeMenu}>
+            <LogoMark theme={theme} />
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Imo Harmonia</p>
-              <p className="text-base font-semibold text-slate-950">Urbanismo Descomplicado</p>
+              <p className="font-display text-xl font-[700] tracking-[-0.04em] text-[var(--text)] dark:text-[var(--text-dark)]">
+                Imo Harmonia
+              </p>
+              <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.6)]">
+                Urbanismo Descomplicado
+              </p>
             </div>
           </a>
 
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 lg:flex">
-            {navItems.map(([href, label]) => (
-              <a key={href} href={href} className="transition hover:text-slate-950">
-                {label}
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--text-muted)] lg:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="transition-colors duration-200 hover:text-[var(--text)] dark:hover:text-[var(--text-dark)]"
+              >
+                {link.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href="#solucao"
+              className="hidden rounded-xl border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text)] transition-colors duration-200 hover:border-[rgba(255,255,255,0.12)] hover:text-[var(--text-dark)] dark:border-[var(--border-dark)] dark:text-[var(--text-dark)] dark:hover:border-[rgba(255,255,255,0.12)] sm:inline-flex"
+            >
+              Saber Mais
+            </a>
             <button
               type="button"
               aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
-              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
+              onClick={() =>
+                setTheme((current) => (current === "dark" ? "light" : "dark"))
+              }
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border)] bg-[rgba(255,255,255,0.8)] text-[var(--text)] transition-colors duration-200 hover:border-[rgba(255,255,255,0.12)] hover:text-[var(--text-dark)] dark:border-[var(--border-dark)] dark:bg-[var(--surface-elevated-dark)] dark:text-[var(--text-dark)] dark:hover:border-[rgba(255,255,255,0.12)] dark:hover:text-[var(--text-dark)]"
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </button>
-            <a href="#sobre" className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(15,23,42,0.12)] sm:inline-flex">
-              Explorar o Projeto
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <button type="button" aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((open) => !open)} className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 lg:hidden">
+            <button
+              type="button"
+              aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((current) => !current)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border)] bg-[rgba(255,255,255,0.8)] text-[var(--text)] transition-colors duration-200 dark:border-[var(--border-dark)] dark:bg-[var(--surface-elevated-dark)] dark:text-[var(--text-dark)] lg:hidden"
+            >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
@@ -274,69 +478,442 @@ export default function App() {
 
         <AnimatePresence>
           {mobileMenuOpen ? (
-            <Motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="border-t border-white/60 bg-white/92 px-6 pb-6 pt-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:hidden">
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="border-t border-[var(--border)] bg-[rgba(249,249,249,0.96)] px-5 pb-5 pt-3 dark:border-[var(--border-dark)] dark:bg-[rgba(13,13,18,0.94)] lg:hidden"
+            >
               <nav className="flex flex-col gap-2">
-                {navItems.map(([href, label]) => (
-                  <a key={href} href={href} onClick={() => setMobileMenuOpen(false)} className="rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950">
-                    {label}
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={closeMenu}
+                    className="rounded-2xl border border-[var(--border)] px-4 py-3 text-sm font-medium text-[var(--text)] transition-colors duration-200 hover:border-[rgba(255,255,255,0.12)] hover:text-[var(--text-dark)] dark:border-[var(--border-dark)] dark:text-[var(--text-dark)] dark:hover:border-[rgba(255,255,255,0.12)]"
+                  >
+                    {link.label}
                   </a>
                 ))}
+                <a
+                  href="#solucao"
+                  onClick={closeMenu}
+                  className="mt-2 inline-flex items-center justify-center rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[var(--accent-dark)]"
+                >
+                  Saber Mais
+                </a>
               </nav>
-              <a href="#sobre" onClick={() => setMobileMenuOpen(false)} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#2563eb_0%,#06b6d4_52%,#8b5cf6_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(37,99,235,0.28)]">
-                Explorar o Projeto
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </Motion.div>
+            </motion.div>
           ) : null}
         </AnimatePresence>
       </header>
 
-      <main id="topo" className="pt-24 sm:pt-28">
-        <section className="relative px-6 pb-20 pt-14 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28">
-          <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1fr_1.05fr]">
-            <Reveal className="relative z-10">
-              <span className="badge-pill">Plataforma de IA para leitura urbanística</span>
-              <h1 className="mt-8 max-w-4xl text-5xl font-semibold leading-[0.94] tracking-[-0.07em] text-slate-950 sm:text-6xl lg:text-7xl">Imo Harmonia<span className="mt-3 block bg-[linear-gradient(135deg,#0f172a_0%,#2563eb_44%,#06b6d4_72%,#8b5cf6_100%)] bg-clip-text text-transparent">Urbanismo Descomplicado</span></h1>
-              <p className="mt-8 max-w-2xl text-xl leading-8 text-slate-600">Uma plataforma que utiliza Inteligência Artificial para simplificar a interpretação dos Planos Diretores Municipais (PDM).</p>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-500">O objetivo é transformar regulamentos extensos e difíceis de interpretar em apoio técnico mais claro, rápido e útil para profissionais que precisam de decidir com confiança.</p>
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <a href="#sobre" className="inline-flex items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#2563eb_0%,#06b6d4_52%,#8b5cf6_100%)] px-7 py-4 text-base font-semibold text-white shadow-[0_18px_50px_rgba(37,99,235,0.34)] transition hover:-translate-y-1 hover:shadow-[0_24px_65px_rgba(37,99,235,0.4)]">Explorar o Projeto<ArrowRight className="h-5 w-5" /></a>
-                <a href="#poliempreende" className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/85 px-7 py-4 text-base font-semibold text-slate-900 shadow-[0_16px_45px_rgba(15,23,42,0.08)] backdrop-blur transition hover:-translate-y-1 hover:border-slate-300">Ver Poliempreende 2025</a>
-              </div>
-              <div className="mt-12 grid gap-4 sm:grid-cols-3">
-                {metrics.map(([value, label], index) => (
-                  <Reveal key={value} className="glass-card p-5" delay={0.14 + index * 0.08}>
-                    <p className="text-lg font-semibold tracking-[-0.04em] text-slate-950">{value}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{label}</p>
-                  </Reveal>
-                ))}
-              </div>
-            </Reveal>
-            <SmartCityPreview activeMockup={activeMockup} setActiveMockup={setActiveMockup} />
+      <main id="topo" className="relative z-10">
+        <section className="px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,55fr)_minmax(0,45fr)] xl:gap-16">
+            <motion.div
+              variants={heroGroup}
+              initial="hidden"
+              animate="visible"
+              className="relative z-10 min-w-0 overflow-visible"
+            >
+              <motion.div
+                variants={heroItem}
+                className="flex flex-wrap items-center gap-3"
+              >
+                <span className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-2 text-xs font-[500] uppercase tracking-[0.08em] text-[var(--text-muted)]">
+                  Instituto Politécnico da Guarda
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-2 text-xs font-[500] uppercase tracking-[0.08em] text-[var(--text-muted)]">
+                  <Trophy className="h-4 w-4" />
+                  Poliempreende 2025
+                </span>
+              </motion.div>
+
+              <motion.h1
+                variants={heroItem}
+                className="mt-8 font-display text-[clamp(40px,5vw,64px)] font-[700] leading-[0.92] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]"
+              >
+                Urbanismo
+                <br />
+                Descomplicado.
+              </motion.h1>
+
+              <motion.p
+                variants={heroItem}
+                className="mt-7 max-w-2xl text-lg leading-8 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)] sm:text-xl"
+              >
+                Aplicamos Inteligência Artificial à leitura de PDM e
+                regulamentos urbanísticos — para que arquitetos e engenheiros
+                percam menos tempo com burocracia.
+              </motion.p>
+
+              <motion.div
+                variants={heroItem}
+                className="mt-9 flex flex-col gap-3 sm:flex-row"
+              >
+                <a
+                  href="#problema"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-[700] text-white transition-colors duration-200 hover:bg-[var(--accent-dark)]"
+                >
+                  Conhecer o Projeto
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+                <a
+                  href="#solucao"
+                  className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3.5 text-sm font-[500] text-[var(--text)] transition-colors duration-200 hover:border-[rgba(255,255,255,0.08)] hover:text-[var(--text-dark)] dark:border-[rgba(255,255,255,0.08)] dark:text-[var(--text-dark)]"
+                >
+                  Saber Como Funciona
+                </a>
+              </motion.div>
+
+              <motion.div
+                variants={heroItem}
+                className="mt-10 flex flex-wrap gap-4 text-sm text-[var(--text-muted)]"
+              >
+                {trustItems.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div key={item.label} className="inline-flex items-center gap-2 text-[var(--text-muted)]">
+                      <Icon className="h-4 w-4 text-[var(--text-muted)]" />
+                      <span>{item.label}</span>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
+
+            <HeroMockup />
           </div>
         </section>
 
-        <section id="sobre" className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="Sobre o projeto" title="Uma plataforma criada no IPG para tornar o urbanismo muito mais acessível." text="O Imo Harmonia foi desenvolvido por estudantes do Instituto Politécnico da Guarda (IPG) e usa Inteligência Artificial para analisar regulamentos urbanísticos, simplificar a interpretação de regras dos PDM e reduzir a complexidade enfrentada por arquitetos, engenheiros e profissionais do urbanismo." /><div className="mt-14 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]"><Reveal className="glass-card p-8 sm:p-10"><p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Missão</p><h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-950">Menos complexidade. Mais clareza técnica.</h3><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">A plataforma foi pensada para apoiar a análise de regulamentos municipais com uma experiência mais intuitiva, moderna e objetiva, reduzindo o esforço necessário para compreender normas, permissões e restrições urbanísticas.</p></Reveal><Reveal delay={0.1} className="relative overflow-hidden rounded-[32px] border border-slate-200/80 bg-slate-950 p-8 text-white shadow-[0_28px_80px_rgba(15,23,42,0.18)]"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.22),transparent_34%)]" /><div className="relative"><p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Impacto</p><ul className="mt-8 space-y-4 text-base leading-7 text-slate-200"><li className="flex gap-3"><BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-cyan-300" />Simplifica a interpretação de regras urbanísticas complexas.</li><li className="flex gap-3"><BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-cyan-300" />Apoia decisões técnicas com leitura mais rápida e segura.</li><li className="flex gap-3"><BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-cyan-300" />Aproxima tecnologia, urbanismo e experiência prática de projeto.</li></ul></div></Reveal></div></div></section>
+        <section id="problema" className="px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              label="O Problema"
+              title="O urbanismo português é complexo por natureza."
+              description="Entre regulamentos extensos, variações municipais e validações demoradas, o trabalho técnico perde horas em leitura e cruzamento de regras."
+            />
 
-        <section id="problema" className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="O problema" title="Os regulamentos urbanísticos continuam a ser complexos, burocráticos e demorados." text="Profissionais de arquitetura, engenharia e urbanismo passam frequentemente horas a interpretar legislação manualmente, a cruzar artigos e a confirmar condicionantes antes de conseguirem avançar com segurança." /><div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">{problems.map((item, index) => { const Icon = item[0]; const title = item[1]; const text = item[2]; return <Motion.article key={title} className="glass-card p-7" {...motionProps} transition={{ ...motionProps.transition, delay: index * 0.08 }} whileHover={{ y: -8 }}><div className="icon-wrap"><Icon className="h-5 w-5" /></div><h3 className="mt-6 text-2xl font-semibold tracking-[-0.05em] text-slate-950">{title}</h3><p className="mt-4 text-base leading-7 text-slate-600">{text}</p></Motion.article>; })}</div></div></section>
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              {problemCards.map((card, index) => (
+                <motion.article
+                  key={card.title}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.35 }}
+                  variants={sectionReveal}
+                  transition={{ delay: index * 0.08 }}
+                  className="rounded-[20px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-7 dark:bg-[rgba(255,255,255,0.04)]"
+                >
+                  <h3 className="font-display text-2xl font-[700] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-4 text-base leading-7 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]">
+                    {card.description}
+                  </p>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <section id="funcionamento" className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="Como funciona" title="Três etapas simples para transformar regulamentação extensa em apoio técnico acionável." text="A experiência foi desenhada para parecer uma plataforma tecnológica premium: clara, orientada por IA e focada em resultados concretos no trabalho diário." /><div className="mt-14 grid gap-6 lg:grid-cols-3">{steps.map((item, index) => { const Icon = item[0]; const number = item[1]; const title = item[2]; const text = item[3]; return <Motion.article key={number} className="glass-card group relative overflow-hidden p-8" {...motionProps} transition={{ ...motionProps.transition, delay: index * 0.1 }} whileHover={{ y: -10 }}><div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100"><div className="h-full w-full bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.14),transparent_30%)]" /></div><div className="relative"><div className="flex items-center justify-between"><span className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-400">{number}</span><div className="icon-wrap"><Icon className="h-5 w-5" /></div></div><h3 className="mt-10 text-2xl font-semibold tracking-[-0.05em] text-slate-950">{title}</h3><p className="mt-4 text-base leading-7 text-slate-600">{text}</p></div></Motion.article>; })}</div></div></section>
+        <section
+          id="solucao"
+          className="px-5 py-20 sm:px-6 lg:px-8"
+        >
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              label="A Solução"
+              title="IA que lê regulamentos. Para que não tenhas de o fazer."
+              description="Um fluxo claro, explicável e pensado para equipas técnicas que precisam de rapidez sem perder rigor regulamentar."
+            />
 
-        <section id="funcionalidades" className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="Funcionalidades" title="Ferramentas desenhadas para um fluxo de trabalho urbano mais rápido e mais rigoroso." text="Cada funcionalidade foi pensada para reduzir fricção, apoiar leitura técnica e elevar a qualidade da interpretação regulamentar." /><div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">{features.map((item, index) => { const Icon = item[0]; const title = item[1]; const text = item[2]; return <Motion.article key={title} className="glass-card group p-7" {...motionProps} transition={{ ...motionProps.transition, delay: index * 0.07 }} whileHover={{ y: -8 }}><div className="flex items-start justify-between gap-4"><div className="icon-wrap"><Icon className="h-5 w-5" /></div><ArrowRight className="h-5 w-5 text-slate-300 transition duration-300 group-hover:translate-x-1 group-hover:text-slate-500" /></div><h3 className="mt-6 text-2xl font-semibold tracking-[-0.05em] text-slate-950">{title}</h3><p className="mt-4 text-base leading-7 text-slate-600">{text}</p></Motion.article>; })}</div></div></section>
+            <div className="mt-14">
+              <div className="grid gap-6 lg:grid-cols-5">
+                {steps.map((step, index) => {
+                  const StepIcon = step.icon;
 
-        <section id="poliempreende" className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="Poliempreende 2025" title="Um projeto académico com validação real e projeção nacional." text="O Imo Harmonia venceu a fase regional do Poliempreende 2025, recebeu um prémio de 2000€ e vai representar o Instituto Politécnico da Guarda na final nacional, na Universidade de Aveiro." /><div className="mt-14 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]"><Reveal className="relative overflow-hidden rounded-[36px] border border-slate-200/80 bg-slate-950 px-8 py-10 text-white shadow-[0_28px_90px_rgba(15,23,42,0.2)] sm:px-10"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.24),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.24),transparent_34%)]" /><div className="relative"><span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-200">Projeto premiado</span><h3 className="mt-8 max-w-2xl text-4xl font-semibold tracking-[-0.05em] text-white">Inovação tecnológica criada no IPG para simplificar decisões urbanísticas.</h3><p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">O reconhecimento no Poliempreende reforça a relevância do projeto e confirma o potencial da plataforma para transformar a forma como regulamentos urbanísticos são lidos e aplicados.</p></div></Reveal><div className="grid gap-6">{achievements.map((item, index) => { const Icon = item[0]; const title = item[1]; const text = item[2]; return <Reveal key={title} className="glass-card p-7" delay={index * 0.08}><div className="flex items-center gap-4"><div className="icon-wrap"><Icon className="h-5 w-5" /></div><div><h3 className="text-2xl font-semibold tracking-[-0.05em] text-slate-950">{title}</h3><p className="mt-2 text-base leading-7 text-slate-600">{text}</p></div></div></Reveal>; })}</div></div></div></section>
+                  return (
+                    <motion.article
+                      key={step.title}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.3 }}
+                      variants={sectionReveal}
+                      transition={{ delay: index * 0.08 }}
+                      className="rounded-[20px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6 dark:bg-[rgba(255,255,255,0.04)]"
+                    >
+                      <div className="flex flex-col gap-4 text-center">
+                        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent)] text-white">
+                          <StepIcon className="h-6 w-6" />
+                        </span>
+                        <div>
+                        <h3 className="font-display text-2xl font-[700] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]">
+                          {step.title}
+                        </h3>
+                        <p className="mt-3 text-[15px] leading-7 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.article>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <section id="equipa" className="section-shell px-6 pb-16 lg:px-8 lg:pb-24"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="Equipa" title="Uma equipa multidisciplinar com visão tecnológica, criativa e estratégica." text="O projeto foi desenvolvido por estudantes do Instituto Politécnico da Guarda com competências complementares em Engenharia Informática, Design, Marketing, Comunicação e Gestão de Recursos Humanos." /><div className="mt-14 grid gap-6 lg:grid-cols-[1fr_1.05fr]"><div className="grid gap-6"><Reveal className="glass-card overflow-hidden p-4"><div className="overflow-hidden rounded-[28px] border border-white/60 bg-slate-50 dark:border-white/10 dark:bg-slate-900/60"><img src="/Fotos/equipa.jpeg" alt="Equipa do projeto Imo Harmonia" className="h-auto max-h-[520px] w-full object-contain sm:min-h-[360px] sm:object-cover" /></div><figcaption className="px-3 pb-3 pt-6"><p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Instituto Politécnico da Guarda</p><p className="mt-3 text-2xl font-semibold tracking-[-0.05em] text-slate-950">Talento académico de várias áreas a construir um produto com ambição real.</p></figcaption></Reveal><Reveal delay={0.16} className="relative overflow-hidden rounded-[32px] border border-slate-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(240,249,255,0.92),rgba(245,243,255,0.92))] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(15,23,42,0.92),rgba(15,23,42,0.86),rgba(30,41,59,0.92))] dark:shadow-[0_24px_70px_rgba(2,6,23,0.38)]"><div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-cyan-200/40 blur-3xl dark:bg-cyan-400/10" /><div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-violet-200/40 blur-3xl dark:bg-violet-400/10" /><div className="relative"><p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Visão comum</p><p className="mt-5 max-w-xl text-2xl font-semibold tracking-[-0.05em] text-slate-950">Criar um produto premium que torne o urbanismo mais simples, tecnológico e acessível.</p></div></Reveal></div><div className="grid content-start gap-6"><Reveal className="glass-card p-8" delay={0.1}><p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Áreas envolvidas</p><div className="mt-8 grid gap-4 sm:grid-cols-2">{teamAreas.map((item) => { const Icon = item[0]; const label = item[1]; return <div key={label} className="rounded-[24px] border border-slate-200/80 bg-white/80 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] dark:border-white/10 dark:bg-slate-900/70 dark:shadow-[0_16px_40px_rgba(2,6,23,0.3)]"><div className="icon-wrap"><Icon className="h-5 w-5" /></div><p className="mt-5 text-lg font-semibold tracking-[-0.03em] text-slate-950">{label}</p></div>; })}</div></Reveal></div></div></div></section>
+        <section
+          id="funcionalidades"
+          className="px-5 py-20 sm:px-6 lg:px-8"
+        >
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              label="Funcionalidades"
+              title="Construído para profissionais do urbanismo."
+              description="Cada módulo foi desenhado para reduzir interpretação manual, acelerar validação e produzir evidência clara."
+            />
 
-        <section className="section-shell px-6 lg:px-8"><div className="mx-auto max-w-7xl"><SectionTitle eyebrow="FAQ" title="Perguntas frequentes sobre o projeto." text="Uma síntese curta para contextualizar a proposta, o objetivo e o enquadramento do Imo Harmonia." /><div className="mt-14 grid gap-6 md:grid-cols-2">{faqs.map(([question, answer], index) => <Reveal key={question} className="glass-card p-7" delay={index * 0.06}><p className="text-xl font-semibold tracking-[-0.04em] text-slate-950">{question}</p><p className="mt-4 text-base leading-7 text-slate-600">{answer}</p></Reveal>)}</div></div></section>
+            <div className="mt-12 grid gap-8 md:grid-cols-2">
+              {featureCards.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  variants={sectionReveal}
+                  transition={{ delay: index * 0.06 }}
+                  className="flex gap-6 items-start"
+                >
+                  <div className="flex-shrink-0 w-14 text-4xl font-[700] tracking-[-0.02em] text-[rgba(0,0,0,0.18)] dark:text-[rgba(255,255,255,0.18)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-[700] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-3 max-w-xl text-base leading-7 font-[400] text-[var(--text-muted)]">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <section className="px-6 pb-16 lg:px-8 lg:pb-20"><div className="mx-auto max-w-7xl"><Reveal className="relative overflow-hidden rounded-[36px] border border-slate-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(240,249,255,0.95),rgba(245,243,255,0.95))] px-8 py-10 shadow-[0_28px_90px_rgba(15,23,42,0.12)] sm:px-10 dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(15,23,42,0.94),rgba(15,23,42,0.9),rgba(30,41,59,0.92))] dark:shadow-[0_28px_90px_rgba(2,6,23,0.42)]"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.16),transparent_32%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.1),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.1),transparent_32%)]" /><div className="relative"><span className="badge-pill">Síntese final</span><h2 className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">O Imo Harmonia pretende tornar a interpretação urbanística mais simples, clara e acessível.</h2><p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">Trata-se de um projeto académico desenvolvido no Instituto Politécnico da Guarda, com foco na aplicação de Inteligência Artificial para apoiar a leitura de regulamentos urbanísticos e reduzir a complexidade enfrentada por profissionais da área.</p><div className="mt-8 flex flex-wrap gap-3"><span className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200 dark:shadow-[0_10px_24px_rgba(2,6,23,0.24)]">Projeto desenvolvido no IPG</span><span className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200 dark:shadow-[0_10px_24px_rgba(2,6,23,0.24)]">Inteligência Artificial aplicada ao urbanismo</span><span className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200 dark:shadow-[0_10px_24px_rgba(2,6,23,0.24)]">Distinguido no Poliempreende 2025</span></div></div></Reveal></div></section>
+        <section className="px-5 py-20 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+            variants={sectionReveal}
+            className="mx-auto max-w-7xl overflow-hidden rounded-[36px] border border-[var(--border)] bg-[var(--bg)] px-6 py-16 text-center sm:px-10 dark:border-[var(--border-dark)] dark:bg-[var(--bg-dark)]"
+          >
+            <div className="mx-auto max-w-4xl">
+              <div className="award-trophy mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[rgba(37,99,235,0.16)] bg-[rgba(37,99,235,0.08)] text-[var(--accent)]">
+                <Trophy className="h-9 w-9" />
+              </div>
+              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.34em] text-[var(--accent)]">
+                Reconhecimento
+              </p>
+              <h2
+                className="mt-4 font-display text-[clamp(2.2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.05em] text-[var(--text)] dark:text-[var(--text-dark)]"
+                style={{ textWrap: "balance" }}
+              >
+                Vencedores do Poliempreende 2025
+              </h2>
+              <p className="mt-5 text-lg leading-8 text-[rgba(14,14,15,0.68)] dark:text-[rgba(240,239,233,0.68)]">
+                Concurso de empreendedorismo do Instituto Politécnico da Guarda,
+                edição 2025.
+              </p>
+            </div>
+          </motion.div>
+        </section>
+
+        <section className="px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <SectionHeading
+              label="FAQ"
+              title="Perguntas frequentes."
+              description="As respostas essenciais para perceber o estado, o foco e o potencial do projeto."
+              centered
+            />
+
+            <div className="mt-12 space-y-4">
+              {faqItems.map((item, index) => (
+                <FaqItem
+                  key={item.question}
+                  item={item}
+                  isOpen={openFaq === index}
+                  onToggle={() =>
+                    setOpenFaq((current) => (current === index ? -1 : index))
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contacto" className="px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              label="Contacto"
+              title="Fala connosco."
+              description="Para parcerias, dúvidas técnicas ou interesse no projeto."
+              centered
+            />
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.25 }}
+              variants={sectionReveal}
+              className="mx-auto mt-12 max-w-2xl rounded-[8px] border border-[var(--border)] bg-[rgba(255,255,255,0.7)] p-6 dark:border-[var(--border-dark)] dark:bg-[rgba(255,255,255,0.05)] sm:p-8"
+            >
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-[var(--text)] dark:text-[var(--text-dark)]">
+                    Nome
+                  </span>
+                  <div className="relative">
+                    <UserRound className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.46)]" />
+                    <input
+                      type="text"
+                      name="nome"
+                      value={formData.nome}
+                      onChange={handleChange}
+                      required
+                      className="w-full rounded-[8px] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 pl-11 text-[var(--text)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(0,0,0,0.16)] focus:ring-2 focus:ring-[rgba(0,0,0,0.08)] dark:border-[var(--border-dark)] dark:bg-[var(--surface-dark)] dark:text-[var(--text-dark)]"
+                      placeholder="O teu nome"
+                    />
+                  </div>
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-[var(--text)] dark:text-[var(--text-dark)]">
+                    Email
+                  </span>
+                  <div className="relative">
+                    <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.46)]" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full rounded-[8px] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 pl-11 text-[var(--text)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(0,0,0,0.16)] focus:ring-2 focus:ring-[rgba(0,0,0,0.08)] dark:border-[var(--border-dark)] dark:bg-[var(--surface-dark)] dark:text-[var(--text-dark)]"
+                      placeholder="nome@empresa.pt"
+                    />
+                  </div>
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-[var(--text)] dark:text-[var(--text-dark)]">
+                    Perfil profissional
+                  </span>
+                  <select
+                    name="perfil"
+                    value={formData.perfil}
+                    onChange={handleChange}
+                    className="w-full rounded-[8px] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[var(--text)] outline-none transition-colors duration-200 focus:border-[rgba(0,0,0,0.16)] focus:ring-2 focus:ring-[rgba(0,0,0,0.08)] dark:border-[var(--border-dark)] dark:bg-[var(--surface-dark)] dark:text-[var(--text-dark)]"
+                  >
+                    <option>Arquiteto</option>
+                    <option>Engenheiro</option>
+                    <option>Técnico Municipal</option>
+                    <option>Estudante</option>
+                    <option>Outro</option>
+                  </select>
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-[var(--text)] dark:text-[var(--text-dark)]">
+                    Mensagem
+                  </span>
+                  <textarea
+                    name="mensagem"
+                    value={formData.mensagem}
+                    onChange={handleChange}
+                    rows="4"
+                    required
+                    className="w-full rounded-[8px] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[var(--text)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(0,0,0,0.16)] focus:ring-2 focus:ring-[rgba(0,0,0,0.08)] dark:border-[var(--border-dark)] dark:bg-[var(--surface-dark)] dark:text-[var(--text-dark)]"
+                    placeholder="Conta-nos como gostarias de colaborar."
+                  />
+                </label>
+
+                <button
+                  type="submit"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[var(--accent-dark)]"
+                >
+                  Enviar Mensagem
+                </button>
+              </form>
+
+              <AnimatePresence>
+                {formSuccess ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    className="mt-5 flex items-center gap-3 rounded-2xl border border-[rgba(34,197,94,0.2)] bg-[rgba(34,197,94,0.08)] px-4 py-4 text-[rgba(22,101,52,1)] dark:border-[rgba(74,222,128,0.16)] dark:bg-[rgba(34,197,94,0.1)] dark:text-[rgba(134,239,172,1)]"
+                  >
+                    <span className="success-pop inline-flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(34,197,94,0.14)]">
+                      <CheckCircle2 className="h-5 w-5" />
+                    </span>
+                    <p className="text-sm font-medium">
+                      Mensagem enviada! Entraremos em contacto em breve.
+                    </p>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </section>
       </main>
 
-      <footer className="px-6 pb-8 lg:px-8 lg:pb-10"><div className="mx-auto max-w-7xl"><div className="rounded-[32px] border border-white/70 bg-white/75 px-8 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl"><div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"><div><p className="text-xl font-semibold tracking-[-0.04em] text-slate-950">Imo Harmonia</p><p className="mt-2 text-base text-slate-600">Instituto Politécnico da Guarda</p><p className="text-base text-slate-600">Projeto apresentado no Poliempreende 2025</p></div><p className="text-sm font-medium uppercase tracking-[0.24em] text-slate-400">© 2025 Imo Harmonia</p></div></div></div></footer>
+      <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-5 py-10 text-[var(--text)] dark:border-[var(--border-dark)] dark:bg-[var(--bg-dark)] dark:text-[var(--text-dark)] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-6 border-b border-[rgba(0,0,0,0.08)] pb-6 dark:border-white/10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3"> 
+              <LogoMark theme={theme} /> 
+              <div>
+                <p className="font-display text-xl font-[700] tracking-[-0.04em] text-[var(--text)] dark:text-[var(--text-dark)]">
+                  Imo Harmonia
+                </p>
+                <p className="text-sm text-[var(--text-muted)] dark:text-white/56">Urbanismo Descomplicado</p>
+              </div>
+            </div>
+
+            <nav className="flex flex-wrap items-center gap-5 text-sm text-[var(--text-muted)] dark:text-white/62">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors duration-200 hover:text-[var(--text)] dark:hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            <p className="text-sm font-medium text-[var(--text-muted)] dark:text-white/62">
+              IPG · Poliempreende 2025
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 pt-6 text-sm text-[var(--text-muted)] dark:text-white/56 md:flex-row md:items-center md:justify-between">
+            <p>© 2025 Imo Harmonia · Instituto Politécnico da Guarda</p>
+            <p className="text-center">
+              Desenvolvido com ❤️ na Guarda, Portugal 🇵🇹
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
-
-
-
