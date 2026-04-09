@@ -907,7 +907,7 @@ export default function App() {
           </div>
 
           <div className="flex flex-col gap-3 pt-6 text-sm text-[var(--text-muted)] dark:text-white/56 md:flex-row md:items-center md:justify-between">
-            <p>© 2025 Imo Harmonia · Instituto Politécnico da Guarda</p>
+            <p>© 2025 Imo Harmonia · BolinaTEC</p>
             <p className="text-center">
               Desenvolvido com ❤️ por Rodrigo Henriques
             </p>

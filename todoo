@@ -1,1 +1,17 @@
-Tenho que mudar logo no footer ( esta a trocar quando mudo a cor do tema ) para a versão clara o logo fica escuro.
+Com base no que vi, as coisas que fariam mais diferença:
+Alta prioridade
+
+Métricas concretas — Uma barra com 3 números antes ou depois do hero: "12 municípios suportados · Análise em 4.2s · 200+ regras verificadas automaticamente". Mesmo que sejam estimativas para o pitch, ancora o produto na realidade.
+Espaço morto no hero — Ainda há demasiado espaço vazio em baixo do hero antes da próxima secção. Faz o site parecer inacabado.
+O mock do PDM não tem interatividade — Mesmo uma animação simples de typing ou de as linhas aparecerem uma a uma daria a sensação de produto real a funcionar.
+
+Média prioridade
+
+Nenhuma chamada à ação no meio do site — O utilizador rola até ao fim sem ser "interrompido". Um CTA simples tipo "Queres ver como funciona?" + botão a meio do scroll (por exemplo depois das Funcionalidades) ajuda muito.
+A secção Poliempreende é fraca — Ocupa muito espaço para dizer pouco. Ou enriqueces com mais contexto (o que ganhou, quando, contra quantas equipas) ou reduz e integra como um badge pequeno noutra secção.
+Sem favicon personalizado — Pequeno detalhe mas quando o site está aberto no browser vê-se o icon genérico. Mete o logo como favicon.
+
+Baixa prioridade
+
+SEO básico — Meta description, og:image para quando partilhas o link no LinkedIn ou WhatsApp. Faz diferença quando apresentas a juízes.
+Animações de scroll — Algumas secções já têm mas outras aparecem abruptamente. Consistência nas animações de entrada dá polimento.
