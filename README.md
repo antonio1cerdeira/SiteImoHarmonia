@@ -49,28 +49,20 @@ Iniciar ambiente de desenvolvimento:
 
 ```bash
 npm run dev
-```
 
-Gerar build de produção:
 
-```bash
-npm run build
-```
+## Variáveis de ambiente
 
-Pré-visualizar build:
+O formulário de contacto usa Web3Forms + hCaptcha e precisa destas variáveis no ficheiro `.env`:
 
 ```bash
-npm run preview
+VITE_WEB3FORMS_KEY=KEY
+VITE_HCAPTCHA_SITEKEY=KEY
 ```
 
-Executar lint:
+Notas:
 
-```bash
-npm run lint
-```
+- `VITE_WEB3FORMS_KEY`: access key criada no Web3Forms.
+- `VITE_HCAPTCHA_SITEKEY`: site key pública do hCaptcha para o widget no frontend.
+- Em Vite, variáveis para o browser devem começar por `VITE_`.
 
-## Notas
-
-- O projeto usa uma única página React.
-- Os conteúdos visuais da equipa e do logótipo estão em `public/Fotos`.
-- 1 manha e 1/4 de uma tarde

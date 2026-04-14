@@ -376,8 +376,8 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState(0);
   const [formData, setFormData] = useState(FORM_INITIAL_STATE);
   const [formSuccess, setFormSuccess] = useState(false);
-  const [hcaptchaToken, setHCaptchaToken] = useState("");
-  const [hcaptchaError, setHCaptchaError] = useState("");
+  const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const hcaptchaRef = useRef(null);
 
   useEffect(() => {
@@ -404,23 +404,90 @@ export default function App() {
       setFormSuccess(false);
     }
 
-    if (hcaptchaError) {
-      setHCaptchaError("");
+    if (formError) {
+      setFormError("");
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!hcaptchaToken) {
-      setHCaptchaError("Por favor confirma o captcha antes de enviar.");
+    if (isSubmitting) {
       return;
     }
 
-    setFormSuccess(true);
-    setFormData(FORM_INITIAL_STATE);
-    setHCaptchaToken("");
-    hcaptchaRef.current?.resetCaptcha?.();
+    const nome = formData.nome.trim();
+    const email = formData.email.trim();
+    const perfil = formData.perfil.trim();
+    const mensagem = formData.mensagem.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const captchaToken = hcaptchaRef.current?.getResponse?.() || "";
+
+    if (!nome || !email || !perfil || !mensagem) {
+      setFormError("Preenche todos os campos antes de enviar.");
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      setFormError("Introduz um email válido.");
+      return;
+    }
+
+    if (mensagem.length < 10) {
+      setFormError("A mensagem deve ter pelo menos 10 caracteres.");
+      return;
+    }
+
+    if (!captchaToken) {
+      setFormError("Por favor confirma o captcha antes de enviar.");
+      return;
+    }
+
+    const web3formsKey = import.meta.env.VITE_WEB3FORMS_KEY;
+
+    if (!web3formsKey) {
+      setFormError("Falta configurar a chave VITE_WEB3FORMS_KEY.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormError("");
+    setFormSuccess(false);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: web3formsKey,
+          nome,
+          email,
+          perfil,
+          mensagem,
+          "h-captcha-response": captchaToken,
+        }),
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        setFormError(
+          result?.message || "Não foi possível enviar a mensagem. Tenta novamente.",
+        );
+        return;
+      }
+
+      setFormSuccess(true);
+      setFormData(FORM_INITIAL_STATE);
+      hcaptchaRef.current?.resetCaptcha?.();
+    } catch {
+      setFormError("Falha de rede ao enviar a mensagem. Tenta novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -861,28 +928,26 @@ export default function App() {
                   />
                 </label>
 
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <HCaptcha
                     sitekey={import.meta.env.VITE_HCAPTCHA_SITEKEY}
-                    onVerify={(token) => {
-                      setHCaptchaToken(token);
-                      setHCaptchaError("");
-                    }}
-                    onExpire={() => setHCaptchaToken("")}
+                    onVerify={() => setFormError("")}
+                    onExpire={() => setFormError("")}
                     ref={hcaptchaRef}
                     size="normal"
                     theme={theme}
                   />
                 </div>
-                {hcaptchaError ? (
-                  <p className="text-sm text-rose-500">{hcaptchaError}</p>
+                {formError ? (
+                  <p className="text-sm text-rose-500">{formError}</p>
                 ) : null}
 
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[var(--accent-dark)]"
+                  disabled={isSubmitting}
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[var(--accent-dark)] disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Enviar Mensagem
+                  {isSubmitting ? "A enviar..." : "Enviar Mensagem"}
                 </button>
               </form>
 
