@@ -458,20 +458,24 @@ export default function App() {
     setFormSuccess(false);
 
     try {
+      const payload = {
+        access_key: web3formsKey,
+        nome,
+        email,
+        perfil,
+        mensagem,
+        "h-captcha-response": captchaToken,
+      };
+
+      console.log("Payload:", JSON.stringify(payload));
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          access_key: web3formsKey,
-          nome,
-          email,
-          perfil,
-          mensagem,
-          "h-captcha-response": captchaToken,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json().catch(() => null);
