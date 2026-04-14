@@ -232,7 +232,10 @@ function SectionHeading({ label, title, description, centered = false }) {
       </p>
       <h2
         className="mt-4 font-display text-[clamp(2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]"
-        style={{ textWrap: "balance" }}
+        style={{
+          textWrap: "balance",
+          overflowWrap: "anywhere",
+        }}
       >
         {title}
       </h2>
@@ -367,9 +370,7 @@ export default function App() {
       return storedTheme;
     }
 
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return "light";
   });
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -806,7 +807,10 @@ export default function App() {
               </p>
               <h2
                 className="mt-4 font-display text-[clamp(2.2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.05em] text-[var(--text)] dark:text-[var(--text-dark)]"
-                style={{ textWrap: "balance" }}
+                style={{
+                  textWrap: "balance",
+                  overflowWrap: "anywhere",
+                }}
               >
                 Vencedores do Poliempreende 2025
               </h2>
