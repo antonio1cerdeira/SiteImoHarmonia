@@ -460,10 +460,10 @@ export default function App() {
     try {
       const payload = {
         access_key: web3formsKey,
-        nome,
+        name: nome,
         email,
         perfil,
-        mensagem,
+        message: mensagem,
         "h-captcha-response": captchaToken,
       };
 
@@ -940,7 +940,8 @@ export default function App() {
 
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <HCaptcha
-                    sitekey={import.meta.env.VITE_HCAPTCHA_SITEKEY}
+                    sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
+                    reCaptchaCompat={false}
                     onVerify={() => setFormError("")}
                     onExpire={() => setFormError("")}
                     ref={hcaptchaRef}
