@@ -14,7 +14,6 @@
   --text-muted: #6b7280;
   --accent: #2563eb;
   --accent-dark: #1d4ed8;
-  --gold: #c9a84c;
 }
 
 @theme {
@@ -69,96 +68,12 @@
   min-height: 100vh;
 }
 
-.hero-float {
-  animation: heroFloat 3s ease-in-out infinite;
-}
-
-.pipeline-line {
-  position: absolute;
-  pointer-events: none;
-}
-
-.pipeline-line::before,
-.pipeline-line::after {
-  content: "";
-  position: absolute;
-}
-
-.pipeline-line-horizontal {
-  left: 0;
-  right: 0;
-}
-
-.pipeline-line-horizontal::before {
-  left: 0;
-  right: 0;
-  top: 0;
-  border-top: 1px dashed rgba(37, 99, 235, 0.35);
-}
-
-.pipeline-line-horizontal::after {
-  left: 0;
-  right: 0;
-  top: -3px;
-  height: 6px;
-  background:
-    radial-gradient(circle, rgba(37, 99, 235, 0.95) 0 2px, transparent 2.5px)
-    0 0 / 72px 6px repeat-x;
-  animation: flowX 6s linear infinite;
-}
-
-.pipeline-line-vertical::before {
-  bottom: 0;
-  left: 0;
-  top: 0;
-  border-left: 1px dashed rgba(37, 99, 235, 0.35);
-}
-
-.pipeline-line-vertical::after {
-  bottom: 0;
-  left: -3px;
-  top: 0;
-  width: 6px;
-  background:
-    radial-gradient(circle, rgba(37, 99, 235, 0.95) 0 2px, transparent 2.5px)
-    0 0 / 6px 72px repeat-y;
-  animation: flowY 6s linear infinite;
-}
-
 .award-trophy {
   animation: trophyGlow 3.2s ease-in-out infinite;
 }
 
 .success-pop {
   animation: successPop 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes heroFloat {
-  0%,
-  100% {
-    transform: translateY(-8px);
-  }
-  50% {
-    transform: translateY(8px);
-  }
-}
-
-@keyframes flowX {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 72px 0;
-  }
-}
-
-@keyframes flowY {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 72px;
-  }
 }
 
 @keyframes trophyGlow {

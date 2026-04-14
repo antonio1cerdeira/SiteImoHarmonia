@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion as Motion } from "framer-motion";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   AlertTriangle,
@@ -18,7 +18,6 @@ import {
   MapPinned,
   Menu,
   Moon,
-  ScanSearch,
   Search,
   ShieldCheck,
   Sun,
@@ -28,8 +27,6 @@ import {
   X,
   Zap,
 } from "lucide-react";
-
-const Motion = motion;
 
 const navLinks = [
   { href: "#problema", label: "Problema" },
@@ -206,7 +203,7 @@ const heroItem = {
 function LogoMark({ theme }) {
   return (
     <img
-      src="/Fotos/logo.png"
+      src="/Fotos/logo.webp"
       alt="Imo Harmonia logo"
       className="h-11 w-11 rounded-[15px] object-cover"
       style={{ filter: theme === "dark" ? "brightness(0) invert(1)" : "none" }}
@@ -220,7 +217,7 @@ function SectionHeading({ label, title, description, centered = false }) {
     : "max-w-4xl";
 
   return (
-    <motion.div
+    <Motion.div
       variants={sectionReveal}
       initial="hidden"
       whileInView="visible"
@@ -244,13 +241,13 @@ function SectionHeading({ label, title, description, centered = false }) {
           {description}
         </p>
       ) : null}
-    </motion.div>
+    </Motion.div>
   );
 }
 
 function HeroMockup() {
   return (
-    <motion.div
+    <Motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -272,13 +269,13 @@ function HeroMockup() {
           </span>
         </div>
 
-        <motion.div variants={heroGroup} initial="hidden" animate="visible" className="mt-5 space-y-3">
+        <Motion.div variants={heroGroup} initial="hidden" animate="visible" className="mt-5 space-y-3">
           {mockupChecks.map((item) => {
             const Icon = item.icon;
             const isWarning = item.tone === "warning";
 
             return (
-              <motion.div
+              <Motion.div
                 key={item.text}
                 variants={heroItem}
                 className="flex items-center gap-3 rounded-[12px] border border-[rgba(0,0,0,0.06)] bg-[rgba(0,0,0,0.04)] px-4 py-3 dark:border-[var(--border-dark)] dark:bg-[rgba(255,255,255,0.04)]"
@@ -298,10 +295,10 @@ function HeroMockup() {
                     {isWarning ? "Verificar" : "Conforme"}
                   </p>
                 </div>
-              </motion.div>
+              </Motion.div>
             );
           })}
-        </motion.div>
+        </Motion.div>
 
         <div className="mt-6 border-t border-[rgba(0,0,0,0.06)] pt-4 dark:border-[var(--border-dark)]">
           <div className="flex items-center justify-between gap-4">
@@ -314,13 +311,13 @@ function HeroMockup() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </Motion.div>
   );
 }
 
 function FaqItem({ item, isOpen, onToggle }) {
   return (
-    <motion.div
+    <Motion.div
       variants={sectionReveal}
       initial="hidden"
       whileInView="visible"
@@ -344,7 +341,7 @@ function FaqItem({ item, isOpen, onToggle }) {
 
       <AnimatePresence initial={false}>
         {isOpen ? (
-          <motion.div
+          <Motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -353,10 +350,10 @@ function FaqItem({ item, isOpen, onToggle }) {
             <div className="border-t border-[var(--border)] px-5 py-5 text-[15px] leading-7 text-[var(--text-muted)] dark:border-[var(--border-dark)] dark:text-[rgba(240,239,233,0.68)] sm:px-6">
               {item.answer}
             </div>
-          </motion.div>
+          </Motion.div>
         ) : null}
       </AnimatePresence>
-    </motion.div>
+    </Motion.div>
   );
 }
 
@@ -465,8 +462,6 @@ export default function App() {
         "h-captcha-response": captchaToken,
       };
 
-      console.log("Payload:", JSON.stringify(payload));
-
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -566,7 +561,7 @@ export default function App() {
 
         <AnimatePresence>
           {mobileMenuOpen ? (
-            <motion.div
+            <Motion.div
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
@@ -592,7 +587,7 @@ export default function App() {
                   Saber Mais
                 </a>
               </nav>
-            </motion.div>
+            </Motion.div>
           ) : null}
         </AnimatePresence>
       </header>
@@ -600,13 +595,13 @@ export default function App() {
       <main id="topo" className="relative z-10">
         <section className="px-5 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,55fr)_minmax(0,45fr)] xl:gap-16">
-            <motion.div
+            <Motion.div
               variants={heroGroup}
               initial="hidden"
               animate="visible"
               className="relative z-10 min-w-0 overflow-visible"
             >
-              <motion.div
+              <Motion.div
                 variants={heroItem}
                 className="flex flex-wrap items-center gap-3"
               >
@@ -617,27 +612,27 @@ export default function App() {
                   <Trophy className="h-4 w-4" />
                   Poliempreende 2025
                 </span>
-              </motion.div>
+              </Motion.div>
 
-              <motion.h1
+              <Motion.h1
                 variants={heroItem}
                 className="mt-8 font-display text-[clamp(40px,5vw,64px)] font-[700] leading-[0.92] tracking-[-0.02em] text-[var(--text)] dark:text-[var(--text-dark)]"
               >
                 Urbanismo
                 <br />
                 Descomplicado.
-              </motion.h1>
+              </Motion.h1>
 
-              <motion.p
+              <Motion.p
                 variants={heroItem}
                 className="mt-7 max-w-2xl text-lg leading-8 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)] sm:text-xl"
               >
                 Aplicamos Inteligência Artificial à leitura de PDM e
                 regulamentos urbanísticos — para que arquitetos e engenheiros
                 percam menos tempo com burocracia.
-              </motion.p>
+              </Motion.p>
 
-              <motion.div
+              <Motion.div
                 variants={heroItem}
                 className="mt-9 flex flex-col gap-3 sm:flex-row"
               >
@@ -654,9 +649,9 @@ export default function App() {
                 >
                   Saber Como Funciona
                 </a>
-              </motion.div>
+              </Motion.div>
 
-              <motion.div
+              <Motion.div
                 variants={heroItem}
                 className="mt-10 flex flex-wrap gap-4 text-sm text-[var(--text-muted)]"
               >
@@ -670,8 +665,8 @@ export default function App() {
                     </div>
                   );
                 })}
-              </motion.div>
-            </motion.div>
+              </Motion.div>
+            </Motion.div>
 
             <HeroMockup />
           </div>
@@ -687,7 +682,7 @@ export default function App() {
 
             <div className="mt-12 grid gap-5 lg:grid-cols-3">
               {problemCards.map((card, index) => (
-                <motion.article
+                <Motion.article
                   key={card.title}
                   initial="hidden"
                   whileInView="visible"
@@ -702,7 +697,7 @@ export default function App() {
                   <p className="mt-4 text-base leading-7 font-[400] text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]">
                     {card.description}
                   </p>
-                </motion.article>
+                </Motion.article>
               ))}
             </div>
           </div>
@@ -725,7 +720,7 @@ export default function App() {
                   const StepIcon = step.icon;
 
                   return (
-                    <motion.article
+                    <Motion.article
                       key={step.title}
                       initial="hidden"
                       whileInView="visible"
@@ -747,7 +742,7 @@ export default function App() {
                         </p>
                       </div>
                     </div>
-                  </motion.article>
+                  </Motion.article>
                   );
                 })}
               </div>
@@ -768,7 +763,7 @@ export default function App() {
 
             <div className="mt-12 grid gap-8 md:grid-cols-2">
               {featureCards.map((feature, index) => (
-                <motion.div
+                <Motion.div
                   key={feature.title}
                   initial="hidden"
                   whileInView="visible"
@@ -788,14 +783,14 @@ export default function App() {
                       {feature.description}
                     </p>
                   </div>
-                </motion.div>
+                </Motion.div>
               ))}
             </div>
           </div>
         </section>
 
         <section className="px-5 py-20 sm:px-6 lg:px-8">
-          <motion.div
+          <Motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.35 }}
@@ -823,7 +818,7 @@ export default function App() {
                 edição 2025.
               </p>
             </div>
-          </motion.div>
+          </Motion.div>
         </section>
 
         <section className="px-5 py-20 sm:px-6 lg:px-8">
@@ -859,7 +854,7 @@ export default function App() {
               centered
             />
 
-            <motion.div
+            <Motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.25 }}
@@ -964,7 +959,7 @@ export default function App() {
 
               <AnimatePresence>
                 {formSuccess ? (
-                  <motion.div
+                  <Motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -977,10 +972,10 @@ export default function App() {
                     <p className="text-sm font-medium">
                       Mensagem enviada! Entraremos em contacto em breve.
                     </p>
-                  </motion.div>
+                  </Motion.div>
                 ) : null}
               </AnimatePresence>
-            </motion.div>
+            </Motion.div>
           </div>
         </section>
       </main>
@@ -1026,3 +1021,4 @@ export default function App() {
     </div>
   );
 }
+
