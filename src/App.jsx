@@ -422,7 +422,9 @@ export default function App() {
     const perfil = formData.perfil.trim();
     const mensagem = formData.mensagem.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const captchaToken = hcaptchaRef.current?.getResponse?.() || "";
+    const rawCaptchaToken = hcaptchaRef.current?.getResponse?.();
+    const captchaToken =
+      typeof rawCaptchaToken === "string" ? rawCaptchaToken.trim() : "";
 
     if (!nome || !email || !perfil || !mensagem) {
       setFormError("Preenche todos os campos antes de enviar.");
