@@ -32,6 +32,9 @@ jobs:
         run: npm install
 
       - name: Build
+        env:
+          VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
+          VITE_HCAPTCHA_SITEKEY: ${{ secrets.VITE_HCAPTCHA_SITEKEY }}
         run: npm run build
 
       - name: Setup Pages
