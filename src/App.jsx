@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
@@ -378,8 +378,8 @@ export default function App() {
   const [formData, setFormData] = useState(FORM_INITIAL_STATE);
   const [formSuccess, setFormSuccess] = useState(false);
   const [formError, setFormError] = useState("");
+  const [hcaptchaToken, setHcaptchaToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const hcaptchaRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -422,9 +422,7 @@ export default function App() {
     const perfil = formData.perfil.trim();
     const mensagem = formData.mensagem.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const rawCaptchaToken = hcaptchaRef.current?.getResponse?.();
-    const captchaToken =
-      typeof rawCaptchaToken === "string" ? rawCaptchaToken.trim() : "";
+    const captchaToken = hcaptchaToken.trim();
 
     if (!nome || !email || !perfil || !mensagem) {
       setFormError("Preenche todos os campos antes de enviar.");
@@ -489,7 +487,7 @@ export default function App() {
 
       setFormSuccess(true);
       setFormData(FORM_INITIAL_STATE);
-      hcaptchaRef.current?.resetCaptcha?.();
+      setHcaptchaToken("");
     } catch {
       setFormError("Falha de rede ao enviar a mensagem. Tenta novamente.");
     } finally {
@@ -942,9 +940,11 @@ export default function App() {
                   <HCaptcha
                     sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
                     reCaptchaCompat={false}
-                    onVerify={() => setFormError("")}
-                    onExpire={() => setFormError("")}
-                    ref={hcaptchaRef}
+                    onVerify={(token) => {
+                      setHcaptchaToken(token);
+                      setFormError("");
+                    }}
+                    onExpire={() => setHcaptchaToken("")}
                     size="normal"
                     theme={theme}
                   />
