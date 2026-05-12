@@ -48,7 +48,7 @@ Este projeto nasce da investigação real em urbanismo digital, não é uma demo
 
 ```bash
 # Clonar repositório
-git clone https://github.com/yourusername/SiteImoHarmonia.git
+git clone https://github.com/antonio1cerdeira/SiteImoHarmonia.git
 cd SiteImoHarmonia
 
 # Instalar dependências
