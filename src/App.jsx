@@ -431,16 +431,16 @@ export default function App() {
                 REGULATÓRIO × INTELIGÊNCIA ARTIFICIAL
               </Motion.p>
 
-              <Motion.h1 variants={heroItem} className="mx-auto max-w-6xl leading-tight">
-                <div className="font-display-sans text-[72px] md:text-[96px] font-[600] text-[var(--text)]">Regulamentos urbanísticos</div>
+              <Motion.h1 variants={heroItem} className="mx-auto max-w-6xl leading-tight px-4 break-words">
+                <div className="font-display-sans text-[clamp(1.8rem,6.5vw,3.6rem)] md:text-[96px] font-[600] text-[var(--text)]">Regulamentos urbanísticos</div>
                 <div className="mt-4">
-                  <span className="font-display-serif italic text-[72px] md:text-[96px] font-[700] text-[var(--text)]">Interpretados</span>
-                  <span className="ml-4 font-display-sans text-[72px] md:text-[96px] font-[600] text-[var(--text)]"> Em segundos.</span>
+                  <span className="font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">Interpretados</span>
+                  <span className="ml-3 block sm:inline font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">Em segundos.</span>
                 </div>
               </Motion.h1>
 
               <Motion.p variants={heroItem} className="mx-auto mt-8 max-w-xl text-[var(--text-muted)] font-body-lg">
-                ImoHarmonia lê, interpreta e valida PDMs municipais por ti. Menos risco. Menos horas. Mais confiança.
+                Lê, interpreta e valida PDMs municipais por ti. Menos risco. Menos horas. Mais confiança.
               </Motion.p>
 
               <Motion.div variants={heroItem} className="mt-12 flex flex-col items-center gap-4 md:flex-row md:justify-center">
@@ -754,7 +754,7 @@ export default function App() {
           </div>
 
           <div className="flex flex-col gap-3 pt-6 text-sm text-[rgba(224,227,232,0.56)] md:flex-row md:items-center md:justify-between">
-            <p>© 2025 ImoHarmonia</p>
+            <p>© 2026 ImoHarmonia</p>
             <p className="text-center">Desenvolvido por Rodrigo Henriques</p>
           </div>
         </div>

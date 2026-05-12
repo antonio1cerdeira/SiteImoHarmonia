@@ -178,3 +178,34 @@
   transition: opacity 0.7s var(--ease-out-quart), transform 0.7s var(--ease-out-quart);
   transition-delay: 150ms;
 }
+
+@media (max-width: 767px) {
+  .stats-wrap {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.25rem;
+  }
+
+  .stats-stat {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .stats-separator {
+    display: none !important;
+  }
+
+  .stats-value {
+    font-size: clamp(2.5rem, 15vw, 4rem) !important;
+    line-height: 0.95 !important;
+  }
+
+  .stats-label {
+    max-width: 18rem;
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.22em !important;
+  }
+}

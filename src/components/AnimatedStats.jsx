@@ -87,57 +87,57 @@ export default function AnimatedStats() {
   }, []);
 
   return (
-    <div ref={containerRef} className="mt-12 flex flex-row items-start gap-0">
+    <div ref={containerRef} className="stats-wrap mt-12 flex flex-col md:flex-row items-start md:items-center">
       {/* Stat 1: 72% */}
       <div
-        className={`flex-1 pl-0 pr-8 transition-all duration-700 ${
+        className={`stats-stat flex-1 px-4 md:px-0 transition-all duration-700 ${
           animated[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
-        <div className="font-display-sans text-[56px] md:text-[72px] font-bold tracking-tight text-[var(--text-dark)]">
+        <div className="stats-value font-display-sans text-[clamp(2rem,8vw,4.5rem)] md:text-[clamp(2.5rem,4.5vw,4.5rem)] font-bold tracking-tight text-[var(--text-dark)]">
           {percentageValue}%
         </div>
-        <div className="mt-2 font-label-mono text-[10px] uppercase tracking-[0.2em] text-[var(--on-surface-variant)]">
+        <div className="stats-label mt-2 font-label-mono text-[11px] uppercase tracking-[0.18em] text-[var(--on-surface-variant)]">
           Dos erros em licenciamento → interpretação regulatória
         </div>
       </div>
 
       {/* Separator 1 */}
-      <div className="w-px h-16 bg-[rgba(255,255,255,0.08)] self-center" />
+      <div className="stats-separator hidden md:block w-px h-16 bg-[rgba(255,255,255,0.08)] self-center" />
 
       {/* Stat 2: 6–12h */}
       <div
-        className={`flex-1 px-8 transition-all duration-700 ${
+        className={`stats-stat flex-1 px-4 md:px-8 mt-4 md:mt-0 transition-all duration-700 ${
           animated[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
         style={{
           transitionDelay: "150ms",
         }}
       >
-        <div className="font-display-sans text-[48px] md:text-[56px] font-bold tracking-tight text-[var(--text-dark)] whitespace-nowrap">
+        <div className="stats-value font-display-sans text-[clamp(1.6rem,6vw,3.6rem)] md:text-[clamp(2rem,4.5vw,3.6rem)] font-bold tracking-tight text-[var(--text-dark)] break-words">
           6–12h
         </div>
-        <div className="mt-2 font-label-mono text-[10px] uppercase tracking-[0.2em] text-[var(--on-surface-variant)]">
+        <div className="stats-label mt-2 font-label-mono text-[11px] uppercase tracking-[0.18em] text-[var(--on-surface-variant)]">
           Por projeto em leitura manual de PDMs
         </div>
       </div>
 
       {/* Separator 2 */}
-      <div className="w-px h-16 bg-[rgba(255,255,255,0.08)] self-center" />
+      <div className="stats-separator hidden md:block w-px h-16 bg-[rgba(255,255,255,0.08)] self-center" />
 
       {/* Stat 3: 308 */}
       <div
-        className={`flex-1 pl-8 transition-all duration-700 ${
+        className={`stats-stat flex-1 px-4 md:pl-8 mt-4 md:mt-0 transition-all duration-700 ${
           animated[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
         style={{
           transitionDelay: "300ms",
         }}
       >
-        <div className="font-display-sans text-[56px] md:text-[72px] font-bold tracking-tight text-[var(--text-dark)]">
+        <div className="stats-value font-display-sans text-[clamp(2rem,7.5vw,4.5rem)] md:text-[clamp(2.5rem,4.5vw,4.5rem)] font-bold tracking-tight text-[var(--text-dark)]">
           {municipiosValue}
         </div>
-        <div className="mt-2 font-label-mono text-[10px] uppercase tracking-[0.2em] text-[var(--on-surface-variant)]">
+        <div className="stats-label mt-2 font-label-mono text-[11px] uppercase tracking-[0.18em] text-[var(--on-surface-variant)]">
           Municípios em Portugal continental
         </div>
       </div>
