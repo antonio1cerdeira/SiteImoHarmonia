@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "problem": "Problem",
+    "process": "How It Works",
+    "features": "Features",
+    "contact": "Contact",
+    "signin": "Sign In",
+    "earlyAccess": "Early Access"
+  },
+  "hero": {
+    "tagline": "REGULATORY × ARTIFICIAL INTELLIGENCE",
+    "title1": "Urban Planning",
+    "title2": "Interpreted",
+    "title3": "In seconds.",
+    "subtitle": "Reads, interprets and validates PDMs for you. Less risk. Less hours. More confidence.",
+    "cta1": "View Demo →",
+    "cta2": "How it works ↓"
+  },
+  "proof": {
+    "item1": "Developed at Guarda Polytechnic Institute",
+    "item2": "Poliempreende 2025",
+    "item3": "Initial focus: Portuguese municipalities"
+  },
+  "problem": {
+    "title": "A PDM has hundreds of articles. Your project depends on a handful. Finding them should be automatic.",
+    "description": "The fragmentation of Municipal Master Plans in Portugal creates a maze of uncertainty for architects, engineers and developers. Manual reading is slow, prone to human error and consumes weeks in preliminary analysis."
+  },
+  "process": {
+    "title": "Verification Process",
+    "steps": [
+      {
+        "title": "Upload",
+        "description": "Upload your PDM or project in PDF.",
+        "displayTitle": "You upload the document."
+      },
+      {
+        "title": "Reading",
+        "description": "AI interprets the document and structures the content.",
+        "displayTitle": "AI reads for you."
+      },
+      {
+        "title": "Extraction",
+        "description": "Facts, rules and constraints are extracted automatically.",
+        "displayTitle": "You receive an auditable report."
+      }
+    ],
+    "mockup": {
+      "filename": "PDM_ImoHarmonia.pdf",
+      "scanningArticle": "SCANNING_ARTICLE_42...",
+      "confidence": "CONFIDENCE: 0.98",
+      "extracting": "EXTRACTING_COEFFICIENTS...",
+      "processing": "PROCESSING",
+      "detected": "Detected: Low Density Urban Land.",
+      "article": "Article 14: minimum lateral setback 3m.",
+      "semanticReading": "Semantic reading active",
+      "impermeability": "Impermeability Index",
+      "buildingHeight": "Maximum Building Height",
+      "compliant": "Compliant",
+      "verify": "Verify"
+    }
+  },
+  "mockupData": {
+    "motorTitle": "Regulatory Engine",
+    "analysisTitle": "PDM Analysis",
+    "status": "In progress",
+    "statusLabels": {
+      "compliant": "Compliant",
+      "verify": "Verify"
+    },
+    "checks": [
+      { "label": "Occupancy index", "text": "Occupancy index: compliant", "tone": "success" },
+      { "label": "Setbacks", "text": "Setbacks: compliant", "tone": "success" },
+      { "label": "Building height", "text": "Building height: verify", "tone": "warning" }
+    ],
+    "generatedTime": "Report generated in 4.2s",
+    "auditable": "Auditable",
+    "statusCompliant": "Compliant",
+    "statusVerify": "Verify"
+  },
+  "features": {
+    "label": "Academic Rigor",
+    "title": "Applied research. Not a weekend idea.",
+    "description": "ImoHarmonia was born at Guarda Polytechnic Institute from real research in Urban Law and natural language processing. Every technical decision is grounded — it's not a demo, it's a tool built for professionals who cannot afford to make mistakes.",
+    "footer": "Guarda Polytechnic · Poliempreende 2025"
+  },
+  "cta": {
+    "title": "Stop interpreting regulations by hand.",
+    "button": "Secure Early Access"
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Interested in the project.",
+    "description": "For academic partnerships, early access testing or technical collaboration.",
+    "form": {
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@company.com",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell us how you'd like to collaborate.",
+      "submitButton": "Send",
+      "submitting": "Sending..."
+    },
+    "errors": {
+      "allFields": "Please fill in all fields before sending.",
+      "invalidEmail": "Please enter a valid email.",
+      "shortMessage": "Message must be at least 10 characters.",
+      "captcha": "Please confirm the captcha before sending.",
+      "missingKey": "Missing VITE_WEB3FORMS_KEY configuration.",
+      "sendFailed": "Failed to send message. Please try again.",
+      "networkError": "Network error sending message. Please try again."
+    },
+    "success": "Message sent! We'll get back to you soon."
+  },
+  "footer": {
+    "copyright": "© 2026 ImoHarmonia",
+    "credits": "Developed by Rodrigo Henriques"
+  }
+}

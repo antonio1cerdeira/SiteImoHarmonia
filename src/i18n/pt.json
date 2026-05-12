@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "problem": "Problema",
+    "process": "Como Funciona",
+    "features": "Funcionalidades",
+    "contact": "Contacto",
+    "signin": "Entrar",
+    "earlyAccess": "Acesso Antecipado"
+  },
+  "hero": {
+    "tagline": "REGULATÓRIO × INTELIGÊNCIA ARTIFICIAL",
+    "title1": "Regulamentos urbanísticos",
+    "title2": "Interpretados",
+    "title3": "Em segundos.",
+    "subtitle": "Lê, interpreta e valida PDMs municipais por ti. Menos risco. Menos horas. Mais confiança.",
+    "cta1": "Ver Demonstração →",
+    "cta2": "Como funciona ↓"
+  },
+  "proof": {
+    "item1": "Desenvolvido no Instituto Politécnico da Guarda",
+    "item2": "Poliempreende 2025",
+    "item3": "Foco inicial: municípios portugueses"
+  },
+  "problem": {
+    "title": "Um PDM tem centenas de artigos. O teu projeto depende de meia dúzia deles. Encontrá-los devia ser automático.",
+    "description": "A fragmentação dos Planos Diretores Municipais em Portugal cria um labirinto de incerteza para arquitetos, engenheiros e promotores. A leitura manual é lenta, sujeita a erro humano e consome semanas em análises preliminares."
+  },
+  "process": {
+    "title": "Processo de Verificação",
+    "steps": [
+      {
+        "title": "Upload",
+        "description": "Carregas o PDM ou projeto em PDF.",
+        "displayTitle": "Carregas o documento."
+      },
+      {
+        "title": "Leitura",
+        "description": "A IA interpreta o documento e estrutura o conteúdo.",
+        "displayTitle": "A IA lê por ti."
+      },
+      {
+        "title": "Extração",
+        "description": "Factos, regras e condicionantes são extraídos automaticamente.",
+        "displayTitle": "Recebes um relatório auditável."
+      }
+    ],
+    "mockup": {
+      "filename": "PDM_ImoHarmonia.pdf",
+      "scanningArticle": "SCANNING_ARTICLE_42...",
+      "confidence": "CONFIDENCE: 0.98",
+      "extracting": "EXTRACTING_COEFFICIENTS...",
+      "processing": "PROCESSING",
+      "detected": "Detectado: Solo Urbano de Baixa Densidade.",
+      "article": "Artigo 14º: afastamento lateral mínimo 3m.",
+      "semanticReading": "Leitura semântica ativa",
+      "impermeability": "Índice de Impermeabilização",
+      "buildingHeight": "Cércea Máxima Admitida",
+      "compliant": "Conforme",
+      "verify": "Verificar"
+    }
+  },
+  "mockupData": {
+    "motorTitle": "Motor Regulatório",
+    "analysisTitle": "Análise PDM",
+    "status": "Em curso",
+    "statusLabels": {
+      "compliant": "Conforme",
+      "verify": "Verificar"
+    },
+    "checks": [
+      { "label": "Índice de ocupação", "text": "Índice de ocupação: conforme", "tone": "success" },
+      { "label": "Afastamentos mínimos", "text": "Afastamentos mínimos: conforme", "tone": "success" },
+      { "label": "Altura máxima", "text": "Altura máxima: verificar", "tone": "warning" }
+    ],
+    "generatedTime": "Relatório gerado em 4.2s",
+    "auditable": "Auditável",
+    "statusCompliant": "Conforme",
+    "statusVerify": "Verificar"
+  },
+  "features": {
+    "label": "Rigor Académico",
+    "title": "Investigação aplicada. Não uma ideia de fim de semana.",
+    "description": "O ImoHarmonia nasceu no Instituto Politécnico da Guarda de investigação real em Direito do Urbanismo e processamento de linguagem natural. Cada decisão técnica tem fundamentação — não é uma demo, é uma ferramenta construída para ser usada por profissionais que não podem errar.",
+    "footer": "Politécnico da Guarda · Poliempreende 2025"
+  },
+  "cta": {
+    "title": "Chega de interpretar regulamentos à mão.",
+    "button": "Garantir Acesso Antecipado"
+  },
+  "contact": {
+    "label": "Contacto",
+    "title": "Interesse no projeto.",
+    "description": "Para parcerias académicas, testes antecipados ou colaboração técnica.",
+    "form": {
+      "nameLabel": "Nome",
+      "namePlaceholder": "O teu nome",
+      "emailLabel": "Email",
+      "emailPlaceholder": "nome@empresa.pt",
+      "messageLabel": "Mensagem",
+      "messagePlaceholder": "Conta-nos como gostarias de colaborar.",
+      "submitButton": "Enviar",
+      "submitting": "A enviar..."
+    },
+    "errors": {
+      "allFields": "Preenche todos os campos antes de enviar.",
+      "invalidEmail": "Introduz um email válido.",
+      "shortMessage": "A mensagem deve ter pelo menos 10 caracteres.",
+      "captcha": "Por favor confirma o captcha antes de enviar.",
+      "missingKey": "Falta configurar a chave VITE_WEB3FORMS_KEY.",
+      "sendFailed": "Não foi possível enviar a mensagem. Tenta novamente.",
+      "networkError": "Falha de rede ao enviar a mensagem. Tenta novamente."
+    },
+    "success": "Mensagem enviada! Entraremos em contacto em breve."
+  },
+  "footer": {
+    "copyright": "© 2026 ImoHarmonia",
+    "credits": "Desenvolvido por Rodrigo Henriques"
+  }
+}

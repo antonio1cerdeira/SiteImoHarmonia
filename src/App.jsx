@@ -4,52 +4,50 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { AlertTriangle, FileOutput, ShieldCheck, Search, BookOpen, Check, CheckCircle2, Mail, Menu, Upload, UserRound, X } from "lucide-react";
 import AnimatedStats from "./components/AnimatedStats";
 import PDMAnalyzer from "./components/PDMAnalyzer";
+import { useLanguage } from "./hooks/useLanguage";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
-const navLinks = [
-  { href: "#problema", label: "Problema" },
-  { href: "#processo", label: "Como Funciona" },
-  { href: "#funcionalidades", label: "Funcionalidades" },
-  { href: "#contacto", label: "Contacto" },
+const navLinkKeys = [
+  { href: "#problema", labelKey: "nav.problem" },
+  { href: "#processo", labelKey: "nav.process" },
+  { href: "#funcionalidades", labelKey: "nav.features" },
+  { href: "#contacto", labelKey: "nav.contact" },
 ];
 
-const proofItems = [
-  "Desenvolvido no Instituto Politécnico da Guarda",
-  "Poliempreende 2025",
-  "Foco inicial: municípios portugueses",
+const proofItemKeys = [
+  "proof.item1",
+  "proof.item2",
+  "proof.item3",
 ];
 
-const processSteps = [
+const processStepKeys = [
   {
     icon: Upload,
-    title: "Upload",
-    description: "Carregas o PDM ou projeto em PDF.",
+    stepIndex: 0,
+    titleKey: "process.steps.0.title",
+    descriptionKey: "process.steps.0.description",
+    displayTitleKey: "process.steps.0.displayTitle",
   },
   {
     icon: BookOpen,
-    title: "Leitura",
-    description: "A IA interpreta o documento e estrutura o conteúdo.",
+    stepIndex: 1,
+    titleKey: "process.steps.1.title",
+    descriptionKey: "process.steps.1.description",
+    displayTitleKey: "process.steps.1.displayTitle",
   },
   {
     icon: Search,
-    title: "Extração",
-    description: "Factos, regras e condicionantes são extraídos automaticamente.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Validação",
-    description: "A conformidade é verificada contra as regras locais.",
-  },
-  {
-    icon: FileOutput,
-    title: "Relatório",
-    description: "Recebes um resultado claro, auditável e exportável.",
+    stepIndex: 2,
+    titleKey: "process.steps.2.title",
+    descriptionKey: "process.steps.2.description",
+    displayTitleKey: "process.steps.2.displayTitle",
   },
 ];
 
-const mockupChecks = [
-  { icon: Check, text: "Índice de ocupação: conforme", tone: "success" },
-  { icon: Check, text: "Afastamentos mínimos: conforme", tone: "success" },
-  { icon: AlertTriangle, text: "Altura máxima: verificar", tone: "warning" },
+const mockupCheckKeys = [
+  { icon: Check, textKey: "mockupData.checks.0.text", tone: "success" },
+  { icon: Check, textKey: "mockupData.checks.1.text", tone: "success" },
+  { icon: AlertTriangle, textKey: "mockupData.checks.2.text", tone: "warning" },
 ];
 
 const FORM_INITIAL_STATE = {
@@ -116,6 +114,7 @@ function SectionHeading({ label, title, description, centered = false }) {
 
 
 function HeroMockup() {
+  const { t } = useLanguage();
   return (
     <Motion.div
       initial={{ opacity: 0, scale: 0.98 }}
@@ -140,13 +139,13 @@ function HeroMockup() {
         </div>
 
         <Motion.div variants={heroGroup} initial="hidden" animate="visible" className="mt-5 space-y-3">
-          {mockupChecks.map((item) => {
+          {mockupCheckKeys.map((item, index) => {
             const Icon = item.icon;
             const isWarning = item.tone === "warning";
 
             return (
               <Motion.div
-                key={item.text}
+                key={index}
                 variants={heroItem}
                 className="flex items-center gap-3 rounded-[12px] border border-[rgba(0,0,0,0.06)] bg-[rgba(0,0,0,0.04)] px-4 py-3 dark:border-[var(--border-dark)] dark:bg-[rgba(255,255,255,0.04)]"
               >
@@ -161,10 +160,10 @@ function HeroMockup() {
                 </span>
                 <div className="min-w-0 text-left">
                   <p className="text-sm font-[600] text-[var(--text)] sm:text-[15px] dark:text-[var(--text-dark)]">
-                    {item.text}
+                    {t(item.textKey)}
                   </p>
                   <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.56)]">
-                    {isWarning ? "Verificar" : "Conforme"}
+                    {isWarning ? t('mockupData.statusVerify') : t('mockupData.statusCompliant')}
                   </p>
                 </div>
               </Motion.div>
@@ -188,6 +187,7 @@ function HeroMockup() {
 }
 
 export default function App() {
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -356,7 +356,7 @@ export default function App() {
           </a>
 
           <nav className="hidden flex-1 justify-center gap-8 text-[10px] font-label-mono uppercase tracking-widest text-[var(--text-muted)] lg:flex">
-            {navLinks.map((link) => {
+            {navLinkKeys.map((link) => {
               const isActive = activeSection === link.href.slice(1);
               return (
                 <a
@@ -368,18 +368,19 @@ export default function App() {
                       : 'text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </a>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <a href="#contacto" className="hidden rounded-full border border-[var(--border)] px-4 py-2 text-[11px] font-[500] uppercase tracking-widest text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--text)] sm:inline-flex">
-              Entrar
+              {t('nav.signin')}
             </a>
             <a href="#contacto" className="hidden rounded-full bg-[var(--secondary)] px-4 py-2 text-[11px] font-[700] uppercase tracking-widest text-[var(--on-secondary)] sm:inline-flex">
-              Acesso Antecipado
+              {t('nav.earlyAccess')}
             </a>
             <button
               type="button"
@@ -397,7 +398,7 @@ export default function App() {
           {mobileMenuOpen ? (
             <Motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="border-t border-[var(--border)] bg-[rgba(8,12,16,0.95)] backdrop-blur-md px-5 pb-6 pt-4 lg:hidden">
               <nav className="flex flex-col gap-2 mb-4">
-                {navLinks.map((link) => {
+                {navLinkKeys.map((link) => {
                   const isActive = activeSection === link.href.slice(1);
                   return (
                     <a
@@ -410,13 +411,13 @@ export default function App() {
                           : 'border border-[var(--border)] text-[var(--text)] hover:border-[var(--outline)]'
                       }`}
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </a>
                   );
                 })}
               </nav>
               <a href="#contacto" onClick={closeMenu} className="flex items-center justify-center rounded-2xl bg-[var(--secondary)] px-4 py-4 text-sm font-semibold text-[var(--on-secondary)] w-full">
-                Acesso Antecipado
+                {t('nav.earlyAccess')}
               </a>
             </Motion.div>
           ) : null}
@@ -428,24 +429,24 @@ export default function App() {
           <div className="relative mx-auto px-5 text-center">
             <Motion.div variants={heroGroup} initial="hidden" animate="visible">
               <Motion.p variants={heroItem} className="mb-6 text-[11px] font-label-mono uppercase tracking-[0.3em] text-[var(--primary)]">
-                REGULATÓRIO × INTELIGÊNCIA ARTIFICIAL
+                {t('hero.tagline')}
               </Motion.p>
 
               <Motion.h1 variants={heroItem} className="mx-auto max-w-6xl leading-tight px-4 break-words">
-                <div className="font-display-sans text-[clamp(1.8rem,6.5vw,3.6rem)] md:text-[96px] font-[600] text-[var(--text)]">Regulamentos urbanísticos</div>
+                <div className="font-display-sans text-[clamp(1.8rem,6.5vw,3.6rem)] md:text-[96px] font-[600] text-[var(--text)]">{t('hero.title1')}</div>
                 <div className="mt-4">
-                  <span className="font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">Interpretados</span>
-                  <span className="ml-3 block sm:inline font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">Em segundos.</span>
+                  <span className="font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">{t('hero.title2')}</span>
+                  <span className="ml-3 block sm:inline font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">{t('hero.title3')}</span>
                 </div>
               </Motion.h1>
 
               <Motion.p variants={heroItem} className="mx-auto mt-8 max-w-xl text-[var(--text-muted)] font-body-lg">
-                Lê, interpreta e valida PDMs municipais por ti. Menos risco. Menos horas. Mais confiança.
+                {t('hero.subtitle')}
               </Motion.p>
 
               <Motion.div variants={heroItem} className="mt-12 flex flex-col items-center gap-4 md:flex-row md:justify-center">
-                <a href="#processo" className="rounded-full bg-[var(--secondary)] px-8 py-4 text-[14px] font-[700] uppercase tracking-widest text-[var(--on-secondary)]">Ver Demonstração →</a>
-                <a href="#funcionalidades" className="rounded-full border border-[var(--outline)] px-8 py-4 text-[14px] font-[500] uppercase tracking-widest text-[var(--text-muted)]">Como funciona ↓</a>
+                <a href="#processo" className="rounded-full bg-[var(--secondary)] px-8 py-4 text-[14px] font-[700] uppercase tracking-widest text-[var(--on-secondary)]">{t('hero.cta1')}</a>
+                <a href="#funcionalidades" className="rounded-full border border-[var(--outline)] px-8 py-4 text-[14px] font-[500] uppercase tracking-widest text-[var(--text-muted)]">{t('hero.cta2')}</a>
               </Motion.div>
             </Motion.div>
 
@@ -456,7 +457,7 @@ export default function App() {
         <section className="border-y border-[rgba(255,255,255,0.08)] bg-[rgba(16,20,24,0.5)] py-6">
           <div className="mx-auto max-w-container-max px-margin-mobile text-center md:px-margin-desktop">
             <p className="text-[10px] uppercase tracking-[0.2em] text-[rgba(224,227,232,0.6)]">
-              {proofItems.join(" · ")}
+              {proofItemKeys.map(key => t(key)).join(" · ")}
             </p>
           </div>
         </section>
@@ -469,13 +470,13 @@ export default function App() {
                   “
                 </span>
                 <h2 className="font-display-serif text-[clamp(2.4rem,4.5vw,3.8rem)] leading-tight text-[var(--text-dark)] italic">
-                  Um PDM tem centenas de artigos. O teu projeto depende de meia dúzia deles. Encontrá-los devia ser automático.
+                  {t('problem.title')}
                 </h2>
               </div>
 
               <div className="space-y-10">
                 <p className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
-                  A fragmentação dos Planos Diretores Municipais em Portugal cria um labirinto de incerteza para arquitetos, engenheiros e promotores. A leitura manual é lenta, sujeita a erro humano e consome semanas em análises preliminares.
+                  {t('problem.description')}
                 </p>
 
                 <AnimatedStats />
@@ -487,30 +488,26 @@ export default function App() {
         <section id="processo" className="border-t border-[rgba(255,255,255,0.08)] py-32">
           <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
             <h3 className="mb-20 text-center text-[11px] font-[500] uppercase tracking-[0.24em] text-[var(--primary)]">
-              Processo de Verificação
+              {t('process.title')}
             </h3>
 
             <div className="space-y-32">
-              {processSteps.slice(0, 3).map((step, index) => {
+              {processStepKeys.slice(0, 3).map((step, index) => {
                 const StepIcon = step.icon;
                 const reverse = index % 2 === 1;
 
                 return (
                   <div
-                    key={step.title}
+                    key={step.stepIndex}
                     className={`step-animate flex flex-col items-center gap-16 md:flex-row ${reverse ? "md:flex-row-reverse" : ""}`}
                   >
                     <div className="flex-1 step-text-content">
                       <span className="step-number mb-4 block text-[64px] font-mono opacity-10">0{index + 1}</span>
                       <h4 className="mb-6 text-[clamp(1.9rem,3vw,2.6rem)] font-[500] text-[var(--text-dark)]">
-                        {step.title === "Upload"
-                          ? "Carregas o documento."
-                          : step.title === "Leitura"
-                            ? "A IA lê por ti."
-                            : "Recebes um relatório auditável."}
+                        {t(step.displayTitleKey)}
                       </h4>
                       <p className="max-w-md text-base leading-8 text-[rgba(224,227,232,0.72)]">
-                        {step.description}
+                        {t(step.descriptionKey)}
                       </p>
                     </div>
 
@@ -559,15 +556,15 @@ export default function App() {
                       {index === 2 ? (
                         <div className="space-y-4">
                           <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
-                            <span className="text-sm text-[var(--text-dark)]">Índice de Impermeabilização</span>
+                            <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.0.label')}</span>
                             <span className="rounded-full bg-[rgba(74,225,118,0.18)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--tertiary)]">
-                              Conforme
+                              {t('mockupData.statusCompliant')}
                             </span>
                           </div>
                           <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
-                            <span className="text-sm text-[var(--text-dark)]">Cércea Máxima Admitida</span>
+                            <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.1.label')}</span>
                             <span className="rounded-full bg-[rgba(251,191,36,0.16)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--secondary)]">
-                              Verificar
+                              {t('mockupData.statusVerify')}
                             </span>
                           </div>
                         </div>
@@ -590,18 +587,18 @@ export default function App() {
 
             <div className="space-y-8">
               <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--primary)]">
-                Rigor Académico
+                {t('features.label')}
               </span>
               <h3 className="font-display-serif text-[40px] leading-tight text-[var(--text-dark)]">
-                Investigação aplicada. Não uma ideia de fim de semana.
+                {t('features.title')}
               </h3>
               <p className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
-                O ImoHarmonia nasceu no Instituto Politécnico da Guarda de investigação real em Direito do Urbanismo e processamento de linguagem natural. Cada decisão técnica tem fundamentação — não é uma demo, é uma ferramenta construída para ser usada por profissionais que não podem errar.
+                {t('features.description')}
               </p>
 
               <div className="rounded-t border-t border-[var(--outline)] pt-6">
                 <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(224,227,232,0.56)]">
-                  Politécnico da Guarda · Poliempreende 2025
+                  {t('features.footer')}
                 </p>
               </div>
             </div>
@@ -611,13 +608,13 @@ export default function App() {
         <section className="relative overflow-hidden py-40 text-center">
           <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
             <h2 className="mb-12 text-[clamp(2.5rem,5vw,4.8rem)] leading-[1.02] text-[var(--text-dark)]">
-              Chega de interpretar <br /> regulamentos à mão.
+              {t('cta.title')}
             </h2>
             <a
               href="#contacto"
               className="inline-flex items-center justify-center rounded-full bg-[var(--secondary)] px-12 py-5 text-[14px] font-[700] uppercase tracking-[0.24em] text-[var(--on-secondary)] transition-transform duration-300 hover:scale-105"
             >
-              Garantir Acesso Antecipado
+              {t('cta.button')}
             </a>
           </div>
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[rgba(184,195,255,0.12)] to-transparent" />
@@ -628,9 +625,9 @@ export default function App() {
         <section id="contacto" className="bg-[#080C10] px-margin-mobile py-24 md:px-margin-desktop">
           <div className="mx-auto max-w-3xl">
             <SectionHeading
-              label="Contacto"
-              title="Interesse no projeto."
-              description="Para parcerias académicas, testes antecipados ou colaboração técnica."
+              label={t('contact.label')}
+              title={t('contact.title')}
+              description={t('contact.description')}
               centered
             />
 
@@ -643,7 +640,7 @@ export default function App() {
             >
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">Nome</span>
+                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">{t('contact.form.nameLabel')}</span>
                   <div className="relative">
                     <UserRound className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
                     <input
@@ -653,13 +650,13 @@ export default function App() {
                       onChange={handleChange}
                       required
                       className="w-full rounded-[10px] border border-[var(--outline-variant)] bg-[var(--surface)] px-4 py-3 pl-11 text-[var(--text-dark)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(184,195,255,0.3)] focus:ring-2 focus:ring-[rgba(184,195,255,0.12)]"
-                      placeholder="O teu nome"
+                      placeholder={t('contact.form.namePlaceholder')}
                     />
                   </div>
                 </label>
 
                 <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">Email</span>
+                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">{t('contact.form.emailLabel')}</span>
                   <div className="relative">
                     <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
                     <input
@@ -669,13 +666,13 @@ export default function App() {
                       onChange={handleChange}
                       required
                       className="w-full rounded-[10px] border border-[var(--outline-variant)] bg-[var(--surface)] px-4 py-3 pl-11 text-[var(--text-dark)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(184,195,255,0.3)] focus:ring-2 focus:ring-[rgba(184,195,255,0.12)]"
-                      placeholder="nome@empresa.pt"
+                      placeholder={t('contact.form.emailPlaceholder')}
                     />
                   </div>
                 </label>
 
                 <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">Mensagem</span>
+                  <span className="mb-2 block text-sm font-medium text-[var(--text-dark)]">{t('contact.form.messageLabel')}</span>
                   <textarea
                     name="mensagem"
                     value={formData.mensagem}
@@ -683,7 +680,7 @@ export default function App() {
                     rows="4"
                     required
                     className="w-full rounded-[10px] border border-[var(--outline-variant)] bg-[var(--surface)] px-4 py-3 text-[var(--text-dark)] outline-none transition-colors duration-200 placeholder:text-[rgba(107,114,128,0.72)] focus:border-[rgba(184,195,255,0.3)] focus:ring-2 focus:ring-[rgba(184,195,255,0.12)]"
-                    placeholder="Conta-nos como gostarias de colaborar."
+                    placeholder={t('contact.form.messagePlaceholder')}
                   />
                 </label>
 
@@ -708,7 +705,7 @@ export default function App() {
                   disabled={isSubmitting}
                   className="inline-flex w-full items-center justify-center rounded-xl bg-[var(--secondary)] px-6 py-3.5 text-sm font-semibold text-[var(--on-secondary)] transition-colors duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {isSubmitting ? "A enviar..." : "Enviar"}
+                  {isSubmitting ? t('contact.form.submitting') : t('contact.form.submitButton')}
                 </button>
               </form>
 
@@ -725,7 +722,7 @@ export default function App() {
                       <CheckCircle2 className="h-5 w-5" />
                     </span>
                     <p className="text-sm font-medium">
-                      Mensagem enviada! Entraremos em contacto em breve.
+                      {t('contact.success')}
                     </p>
                   </Motion.div>
                 ) : null}
@@ -743,19 +740,19 @@ export default function App() {
             </div>
 
             <nav className="flex flex-wrap items-center gap-5 text-sm text-[rgba(224,227,232,0.56)]">
-              {navLinks.map((link) => (
+              {navLinkKeys.map((link) => (
                 <a key={link.href} href={link.href} className="transition-colors duration-200 hover:text-[var(--text-dark)]">
-                  {link.label}
+                  {t(link.labelKey)}
                 </a>
               ))}
             </nav>
 
-            <p className="text-sm font-medium text-[rgba(224,227,232,0.56)]">IPG · Poliempreende 2025</p>
+            <p className="text-sm font-medium text-[rgba(224,227,232,0.56)]">{t('footer.credits')}</p>
           </div>
 
           <div className="flex flex-col gap-3 pt-6 text-sm text-[rgba(224,227,232,0.56)] md:flex-row md:items-center md:justify-between">
-            <p>© 2026 ImoHarmonia</p>
-            <p className="text-center">Desenvolvido por Rodrigo Henriques</p>
+            <p>{t('footer.copyright')}</p>
+            <p className="text-center">{t('footer.credits')}</p>
           </div>
         </div>
       </footer>

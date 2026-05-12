@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+
+#afins
+.TRANSLATION_STRINGS.md
