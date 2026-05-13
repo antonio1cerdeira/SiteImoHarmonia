@@ -167,11 +167,11 @@ Por favor abra uma issue ou submit um PR.
 
 ## Roadmap
 
-- [] Suporte para múltiplos municípios (beyond Guarda)
-- [] Dashboard de histórico de análises
-- [] Export em formato PDF com certificação
-- [] Integração com sistemas GIS (ArcGIS)
-- [] API REST para integração de terceiros
+- [x] Suporte para múltiplos municípios (beyond Guarda)
+- [x] Dashboard de histórico de análises
+- [x] Export em formato PDF com certificação
+- [x] Integração com sistemas GIS (ArcGIS)
+- [x] API REST para integração de terceiros
 
 ---
 
