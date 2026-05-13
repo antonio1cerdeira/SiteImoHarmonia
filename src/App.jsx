@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion as Motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion as Motion, useScroll, useTransform } from 'framer-motion';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { AlertTriangle, FileOutput, ShieldCheck, Search, BookOpen, Check, CheckCircle2, Mail, Menu, Upload, UserRound, X } from "lucide-react";
 import AnimatedStats from "./components/AnimatedStats";
@@ -85,32 +85,214 @@ const heroItem = {
   },
 };
 
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const parallaxOffsets = ['-10%', '-15%', '-20%'];
+
 // Logo removed per design request
 
 function SectionHeading({ label, title, description, centered = false }) {
   return (
     <Motion.div
-      variants={sectionReveal}
+      variants={fadeSlideUp}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.35 }}
       className={centered ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}
     >
-      <p className="text-[11px] font-[500] uppercase tracking-[0.22em] text-[var(--text-muted)]">
+      <Motion.p
+        variants={fadeSlideUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.35 }}
+        className="text-[11px] font-[500] uppercase tracking-[0.22em] text-[var(--text-muted)]"
+      >
         {label}
-      </p>
-      <h2 className="mt-4 font-display text-[clamp(2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.03em] text-[var(--text)] dark:text-[var(--text-dark)]">
+      </Motion.p>
+      <Motion.h2
+        variants={fadeSlideUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.35 }}
+        className="mt-4 font-display text-[clamp(2rem,4.2vw,3rem)] font-[700] leading-[0.98] tracking-[-0.03em] text-[var(--text)] dark:text-[var(--text-dark)]"
+      >
         {title}
-      </h2>
+      </Motion.h2>
       {description ? (
-        <p className="mt-5 text-lg leading-8 text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]">
+        <Motion.p
+          variants={fadeSlideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.35 }}
+          className="mt-5 text-lg leading-8 text-[var(--text-muted)] dark:text-[rgba(240,239,233,0.68)]"
+        >
           {description}
-        </p>
+        </Motion.p>
       ) : null}
     </Motion.div>
   );
 }
 
+function ProcessStepCard({ step, index, t }) {
+  const cardRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", parallaxOffsets[index] ?? "-10%"]);
+
+  const terminalLineVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: (delay) => ({
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1], delay },
+    }),
+  };
+
+  return (
+    <Motion.div
+      ref={cardRef}
+      style={{ y: parallaxY }}
+      className={`step-animate flex flex-col items-center gap-16 md:flex-row ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}
+    >
+      <div className="flex-1 step-text-content">
+        <span className="step-number mb-4 block text-[64px] font-mono opacity-10">0{index + 1}</span>
+        <Motion.h4
+          variants={fadeSlideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.35 }}
+          className="mb-6 text-[clamp(1.9rem,3vw,2.6rem)] font-[500] text-[var(--text-dark)]"
+        >
+          {t(step.displayTitleKey)}
+        </Motion.h4>
+        <Motion.p
+          variants={fadeSlideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.35 }}
+          className="max-w-md text-base leading-8 text-[rgba(224,227,232,0.72)]"
+        >
+          {t(step.descriptionKey)}
+        </Motion.p>
+      </div>
+
+      <div className="step-mockup w-full flex-1 rounded-[24px] border border-[var(--outline-variant)] bg-[var(--surface)] p-8">
+        {index === 0 ? (
+          <div className="flex items-center gap-4 rounded bg-[var(--background)] p-4">
+            <div className="rounded-full bg-[rgba(184,195,255,0.14)] p-3 text-[var(--primary)]">
+              <Upload className="h-5 w-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-mono text-xs text-[var(--text-dark)]">PDM_ImoHarmonia.pdf</p>
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--outline-variant)]">
+                <Motion.div
+                  initial={{ width: '0%' }}
+                  whileInView={{ width: '100%' }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full bg-[var(--primary)]"
+                />
+              </div>
+            </div>
+            <Motion.div
+              initial={{ opacity: 0, scale: 0.75 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ delay: 1.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-full bg-[rgba(74,225,118,0.16)] p-2 text-[var(--tertiary)]"
+            >
+              <CheckCircle2 className="h-5 w-5" />
+            </Motion.div>
+          </div>
+        ) : null}
+
+        {index === 1 ? (
+          <Motion.div
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.16,
+                  delayChildren: 0.1,
+                },
+              },
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            className="space-y-4 font-mono text-xs"
+          >
+            <Motion.div variants={terminalLineVariants} custom={0} className="flex items-center justify-between opacity-50">
+              <span>SCANNING_ARTICLE_42...</span>
+              <span className="text-[var(--tertiary)]">CONFIDENCE: 0.98</span>
+            </Motion.div>
+            <Motion.div variants={terminalLineVariants} custom={0.05} className="flex items-center justify-between text-[var(--primary)]">
+              <span>EXTRACTING_COEFFICIENTS...</span>
+              <span className="animate-pulse">PROCESSING</span>
+            </Motion.div>
+            <Motion.div variants={terminalLineVariants} custom={0.1} className="h-px bg-[var(--outline-variant)]" />
+            <Motion.div variants={terminalLineVariants} custom={0.15} className="text-[10px] leading-relaxed text-[rgba(224,227,232,0.72)]">
+              Detectado: Solo Urbano de Baixa Densidade. <br />
+              Artigo 14º: afastamento lateral mínimo 3m.
+            </Motion.div>
+            <Motion.div variants={terminalLineVariants} custom={0.2} className="flex items-center gap-3 rounded-[12px] border border-[var(--border-dark)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+              <step.icon className="h-4 w-4 text-[var(--primary)]" />
+              <span className="text-[11px] uppercase tracking-[0.18em] text-[rgba(224,227,232,0.68)]">
+                Leitura semântica ativa
+              </span>
+            </Motion.div>
+          </Motion.div>
+        ) : null}
+
+        {index === 2 ? (
+          <div className="space-y-4">
+            <Motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+              style={{ transformOrigin: 'left' }}
+              className="h-1 w-full rounded-full bg-[rgba(239,68,68,0.35)]"
+            />
+            <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
+              <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.0.label')}</span>
+              <Motion.span
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ delay: 0.5, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-full bg-[rgba(74,225,118,0.18)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--tertiary)]"
+              >
+                {t('mockupData.statusCompliant')}
+              </Motion.span>
+            </div>
+            <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
+              <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.1.label')}</span>
+              <Motion.span
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ delay: 0.8, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-full bg-[rgba(251,191,36,0.16)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--secondary)]"
+              >
+                {t('mockupData.statusVerify')}
+              </Motion.span>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </Motion.div>
+  );
+}
 
 
 function HeroMockup() {
@@ -427,12 +609,12 @@ export default function App() {
       <main id="topo" className="relative z-10">
         <header className="min-h-screen flex items-center justify-center bg-[#080C10]">
           <div className="relative mx-auto px-5 text-center">
-            <Motion.div variants={heroGroup} initial="hidden" animate="visible">
-              <Motion.p variants={heroItem} className="mb-6 text-[11px] font-label-mono uppercase tracking-[0.3em] text-[var(--primary)]">
+            <Motion.div variants={heroGroup} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
+                    <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} className="mb-6 text-[11px] font-label-mono uppercase tracking-[0.3em] text-[var(--primary)]">
                 {t('hero.tagline')}
               </Motion.p>
 
-              <Motion.h1 variants={heroItem} className="mx-auto max-w-6xl leading-tight px-4 break-words">
+                    <Motion.h1 variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} className="mx-auto max-w-6xl leading-tight px-4 break-words">
                 <div className="font-display-sans text-[clamp(1.8rem,6.5vw,3.6rem)] md:text-[96px] font-[600] text-[var(--text)]">{t('hero.title1')}</div>
                 <div className="mt-4">
                   <span className="font-display-sans text-[clamp(1.6rem,6vw,3.2rem)] md:text-[96px] font-[600] text-[var(--text)]">{t('hero.title2')}</span>
@@ -440,13 +622,42 @@ export default function App() {
                 </div>
               </Motion.h1>
 
-              <Motion.p variants={heroItem} className="mx-auto mt-8 max-w-xl text-[var(--text-muted)] font-body-lg">
+                    <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} className="mx-auto mt-8 max-w-xl text-[var(--text-muted)] font-body-lg">
                 {t('hero.subtitle')}
               </Motion.p>
 
-              <Motion.div variants={heroItem} className="mt-12 flex flex-col items-center gap-4 md:flex-row md:justify-center">
-                <a href="#processo" className="rounded-full bg-[var(--secondary)] px-8 py-4 text-[14px] font-[700] uppercase tracking-widest text-[var(--on-secondary)]">{t('hero.cta1')}</a>
-                <a href="#funcionalidades" className="rounded-full border border-[var(--outline)] px-8 py-4 text-[14px] font-[500] uppercase tracking-widest text-[var(--text-muted)]">{t('hero.cta2')}</a>
+                    <Motion.div variants={heroItem} className="mt-12 flex flex-col items-center gap-4 md:flex-row md:justify-center">
+                <Motion.a
+                  href="#processo"
+                  initial="rest"
+                  whileHover="hover"
+                  variants={{
+                    rest: { scale: 1 },
+                    hover: { scale: 1.01 },
+                  }}
+                  style={{ position: 'relative', overflow: 'hidden' }}
+                  className="rounded-full bg-[var(--secondary)] px-8 py-4 text-[14px] font-[700] uppercase tracking-widest text-[var(--on-secondary)]"
+                >
+                  <Motion.span
+                    aria-hidden="true"
+                    variants={{
+                      rest: { x: '-140%', opacity: 0 },
+                      hover: {
+                        x: '140%',
+                        opacity: [0, 0.7, 0],
+                        transition: { duration: 0.5, ease: 'easeInOut' },
+                      },
+                    }}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                  <span style={{ position: 'relative', zIndex: 1 }}>{t('hero.cta1')}</span>
+                </Motion.a>
+                <a href="#processo" className="rounded-full border border-[var(--outline)] px-8 py-4 text-[14px] font-[500] uppercase tracking-widest text-[var(--text-muted)]">{t('hero.cta2').replace('↓', '')}<Motion.span animate={{ y: [0, 4, 0] }} transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }} style={{ display: 'inline-block' }}>↓</Motion.span></a>
               </Motion.div>
             </Motion.div>
 
@@ -456,9 +667,9 @@ export default function App() {
 
         <section className="border-y border-[rgba(255,255,255,0.08)] bg-[rgba(16,20,24,0.5)] py-6">
           <div className="mx-auto max-w-container-max px-margin-mobile text-center md:px-margin-desktop">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[rgba(224,227,232,0.6)]">
+            <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="text-[10px] uppercase tracking-[0.2em] text-[rgba(224,227,232,0.6)]">
               {proofItemKeys.map(key => t(key)).join(" · ")}
-            </p>
+            </Motion.p>
           </div>
         </section>
 
@@ -469,15 +680,15 @@ export default function App() {
                 <span className="mb-8 block text-6xl text-[var(--secondary)] opacity-40">
                   “
                 </span>
-                <h2 className="font-display-serif text-[clamp(2.4rem,4.5vw,3.8rem)] leading-tight text-[var(--text-dark)] italic">
+                <Motion.h2 variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="font-display-serif text-[clamp(2.4rem,4.5vw,3.8rem)] leading-tight text-[var(--text-dark)] italic">
                   {t('problem.title')}
-                </h2>
+                </Motion.h2>
               </div>
 
               <div className="space-y-10">
-                <p className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
+                <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
                   {t('problem.description')}
-                </p>
+                </Motion.p>
 
                 <AnimatedStats />
               </div>
@@ -487,91 +698,13 @@ export default function App() {
 
         <section id="processo" className="border-t border-[rgba(255,255,255,0.08)] py-32">
           <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
-            <h3 className="mb-20 text-center text-[11px] font-[500] uppercase tracking-[0.24em] text-[var(--primary)]">
+            <Motion.h3 variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="mb-20 text-center text-[11px] font-[500] uppercase tracking-[0.24em] text-[var(--primary)]">
               {t('process.title')}
-            </h3>
+            </Motion.h3>
 
             <div className="space-y-32">
               {processStepKeys.slice(0, 3).map((step, index) => {
-                const StepIcon = step.icon;
-                const reverse = index % 2 === 1;
-
-                return (
-                  <div
-                    key={step.stepIndex}
-                    className={`step-animate flex flex-col items-center gap-16 md:flex-row ${reverse ? "md:flex-row-reverse" : ""}`}
-                  >
-                    <div className="flex-1 step-text-content">
-                      <span className="step-number mb-4 block text-[64px] font-mono opacity-10">0{index + 1}</span>
-                      <h4 className="mb-6 text-[clamp(1.9rem,3vw,2.6rem)] font-[500] text-[var(--text-dark)]">
-                        {t(step.displayTitleKey)}
-                      </h4>
-                      <p className="max-w-md text-base leading-8 text-[rgba(224,227,232,0.72)]">
-                        {t(step.descriptionKey)}
-                      </p>
-                    </div>
-
-                    <div className="step-mockup w-full flex-1 rounded-[24px] border border-[var(--outline-variant)] bg-[var(--surface)] p-8">
-                      {index === 0 ? (
-                        <div className="flex items-center gap-4 rounded bg-[var(--background)] p-4">
-                          <div className="rounded-full bg-[rgba(184,195,255,0.14)] p-3 text-[var(--primary)]">
-                            <Upload className="h-5 w-5" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-mono text-xs text-[var(--text-dark)]">PDM_ImoHarmonia.pdf</p>
-                            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--outline-variant)]">
-                              <div className="h-full w-full bg-[var(--primary)]" />
-                            </div>
-                          </div>
-                          <div className="rounded-full bg-[rgba(74,225,118,0.16)] p-2 text-[var(--tertiary)]">
-                            <CheckCircle2 className="h-5 w-5" />
-                          </div>
-                        </div>
-                      ) : null}
-
-                      {index === 1 ? (
-                        <div className="space-y-4 font-mono text-xs">
-                          <div className="flex items-center justify-between opacity-50">
-                            <span>SCANNING_ARTICLE_42...</span>
-                            <span className="text-[var(--tertiary)]">CONFIDENCE: 0.98</span>
-                          </div>
-                          <div className="flex items-center justify-between text-[var(--primary)]">
-                            <span>EXTRACTING_COEFFICIENTS...</span>
-                            <span className="animate-pulse">PROCESSING</span>
-                          </div>
-                          <div className="h-px bg-[var(--outline-variant)]" />
-                          <div className="text-[10px] leading-relaxed text-[rgba(224,227,232,0.72)]">
-                            Detectado: Solo Urbano de Baixa Densidade. <br />
-                            Artigo 14º: afastamento lateral mínimo 3m.
-                          </div>
-                          <div className="flex items-center gap-3 rounded-[12px] border border-[var(--border-dark)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
-                            <StepIcon className="h-4 w-4 text-[var(--primary)]" />
-                            <span className="text-[11px] uppercase tracking-[0.18em] text-[rgba(224,227,232,0.68)]">
-                              Leitura semântica ativa
-                            </span>
-                          </div>
-                        </div>
-                      ) : null}
-
-                      {index === 2 ? (
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
-                            <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.0.label')}</span>
-                            <span className="rounded-full bg-[rgba(74,225,118,0.18)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--tertiary)]">
-                              {t('mockupData.statusCompliant')}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between rounded-[12px] border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-3">
-                            <span className="text-sm text-[var(--text-dark)]">{t('mockupData.checks.1.label')}</span>
-                            <span className="rounded-full bg-[rgba(251,191,36,0.16)] px-3 py-1 text-[10px] font-[700] uppercase tracking-[0.2em] text-[var(--secondary)]">
-                              {t('mockupData.statusVerify')}
-                            </span>
-                          </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                );
+                return <ProcessStepCard key={step.stepIndex} step={step} index={index} t={t} />;
               })}
             </div>
           </div>
@@ -586,15 +719,15 @@ export default function App() {
             </div>
 
             <div className="space-y-8">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--primary)]">
+              <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="text-[11px] uppercase tracking-[0.2em] text-[var(--primary)]">
                 {t('features.label')}
-              </span>
-              <h3 className="font-display-serif text-[40px] leading-tight text-[var(--text-dark)]">
+              </Motion.p>
+              <Motion.h3 variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="font-display-serif text-[40px] leading-tight text-[var(--text-dark)]">
                 {t('features.title')}
-              </h3>
-              <p className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
+              </Motion.h3>
+              <Motion.p variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="text-lg leading-8 text-[rgba(224,227,232,0.72)]">
                 {t('features.description')}
-              </p>
+              </Motion.p>
 
               <div className="rounded-t border-t border-[var(--outline)] pt-6">
                 <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(224,227,232,0.56)]">
@@ -607,15 +740,19 @@ export default function App() {
 
         <section className="relative overflow-hidden py-40 text-center">
           <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
-            <h2 className="mb-12 text-[clamp(2.5rem,5vw,4.8rem)] leading-[1.02] text-[var(--text-dark)]">
+            <Motion.h2 variants={fadeSlideUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} className="mb-12 text-[clamp(2.5rem,5vw,4.8rem)] leading-[1.02] text-[var(--text-dark)]">
               {t('cta.title')}
-            </h2>
-            <a
+            </Motion.h2>
+            <Motion.a
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               href="#contacto"
               className="inline-flex items-center justify-center rounded-full bg-[var(--secondary)] px-12 py-5 text-[14px] font-[700] uppercase tracking-[0.24em] text-[var(--on-secondary)] transition-transform duration-300 hover:scale-105"
             >
               {t('cta.button')}
-            </a>
+            </Motion.a>
           </div>
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[rgba(184,195,255,0.12)] to-transparent" />
         </section>
@@ -746,8 +883,6 @@ export default function App() {
                 </a>
               ))}
             </nav>
-
-            <p className="text-sm font-medium text-[rgba(224,227,232,0.56)]">{t('footer.credits')}</p>
           </div>
 
           <div className="flex flex-col gap-3 pt-6 text-sm text-[rgba(224,227,232,0.56)] md:flex-row md:items-center md:justify-between">
