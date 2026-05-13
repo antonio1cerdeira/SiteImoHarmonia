@@ -191,11 +191,11 @@ MIT License - Veja [LICENSE](LICENSE) para detalhes.
 ## Changelog
 
 ### v0.1.0 (12 Maio 2026)
-- ✅ Lançamento inicial
-- ✅ Componente PDMAnalyzer com diagnóstico expandido
-- ✅ Dark theme profissional GRC
-- ✅ Limpeza de dependências não-utilizadas
-- ✅ Documentação README completa
+- Lançamento inicial
+- Componente PDMAnalyzer com diagnóstico expandido
+-  Dark theme profissional GRC
+-  Limpeza de dependências não-utilizadas
+-  Documentação README completa
 
 ---
 
