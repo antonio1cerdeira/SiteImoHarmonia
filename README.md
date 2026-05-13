@@ -14,10 +14,10 @@
 
 Desenvolvida no **Instituto Politécnico da Guarda** com foco em Direito do Urbanismo e Processamento de Linguagem Natural, a plataforma oferece:
 
-- ✅ **Análise Rigorosa**: Extração automática de artigos e regras de PDM
-- ✅ **Validação Técnica**: Verificação de conformidade contra condicionantes locais
-- ✅ **Relatórios Auditáveis**: Outputs estruturados com confiança AI e rastreabilidade de fontes
-- ✅ **Interface Profissional**: Design GRC (Governance, Risk, Compliance) para profissionais de arquitetura e urbanismo
+-  **Análise Rigorosa**: Extração automática de artigos e regras de PDM
+-  **Validação Técnica**: Verificação de conformidade contra condicionantes locais
+-  **Relatórios Auditáveis**: Outputs estruturados com confiança AI e rastreabilidade de fontes
+-  **Interface Profissional**: Design GRC (Governance, Risk, Compliance) para profissionais de arquitetura e urbanismo
 
 ### Contexto Académico
 
@@ -143,10 +143,10 @@ SiteImoHarmonia/
 
 ## Performance & Otimização
 
-- ✅ **Tree-shaking automático** via Vite
-- ✅ **Zero dependências não-utilizadas** (limpeza de imports)
-- ✅ **CSS minificado** e otimizado pelo Tailwind
-- ✅ **Animações hardware-accelerated** com Framer Motion
+- [x] **Tree-shaking automático** via Vite
+- [x] **Zero dependências não-utilizadas** (limpeza de imports)
+- [x] **CSS minificado** e otimizado pelo Tailwind
+- [x] **Animações hardware-accelerated** com Framer Motion
 
 **Build Size**: ~371 kB (minificado, sem gzip)
 
