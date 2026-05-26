@@ -1,17 +1,5 @@
-/** @type {import('next').NextConfig} */
-const basePath = process.env.BASE_PATH || ""
-
 const nextConfig = {
-  output: "export",
-  trailingSlash: true,
-  basePath,
-  assetPrefix: basePath,
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
+  output: 'export',
 }
 
 export default nextConfig

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import Image from "next/image";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export function Navigation() {
@@ -58,12 +57,12 @@ export function Navigation() {
         >
           {/* Logo */}
           <a href="#inicio" className="flex items-center gap-2 group md:justify-self-start">
-            <Image
+            <img
               src="/Fotos/logo.webp"
               alt="ImoHarmonia"
               width={40}
               height={40}
-              priority
+              loading="eager"
               className={`transition-all duration-500 ${isScrolled ? "w-7 h-7" : "w-9 h-9"}`}
             />
             <span className={`text-muted-foreground font-mono transition-all duration-500 ${isScrolled ? "text-[10px] mt-0.5" : "text-xs mt-1"}`}>{lang.toUpperCase()}</span>

@@ -4,7 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { BookOpen, FileCheck2, ShieldCheck, MapPin } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 
-const featuresPt = [
+type Feature = {
+  number: string;
+  title: string;
+  description: string;
+  visual: "research" | "auditable" | "risk" | "portugal";
+};
+
+const featuresPt: Feature[] = [
   {
     number: "01",
     title: "Investigação aplicada",
@@ -30,9 +37,9 @@ const featuresPt = [
     description: "Começa pelos municípios portugueses e pelos PDM municipais, pensado para o contexto real do urbanismo.",
     visual: "portugal",
   },
-] as const;
+];
 
-const featuresEn = [
+const featuresEn: Feature[] = [
   {
     number: "01",
     title: "Applied research",
@@ -58,7 +65,7 @@ const featuresEn = [
     description: "Starts with Portuguese municipalities and municipal master plans, built for real-world workflows.",
     visual: "portugal",
   },
-] as const;
+];
 
 function AnimatedVisual({ type }: { type: string }) {
   const common = "w-full h-full text-foreground/80";
@@ -76,7 +83,7 @@ function AnimatedVisual({ type }: { type: string }) {
   }
 }
 
-function FeatureCard({ feature, index }: { feature: (typeof featuresPt)[0]; index: number }) {
+function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 

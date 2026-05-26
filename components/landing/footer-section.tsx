@@ -1,11 +1,12 @@
 "use client";
 
 import { AnimatedWave } from "./animated-wave";
-import Image from "next/image";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export function FooterSection() {
   const { lang } = useLanguage();
+
+  type FooterLink = { name: string; href: string };
 
   const footerLinks =
     lang === "pt"
@@ -62,6 +63,8 @@ export function FooterSection() {
           ],
         } as const);
 
+  const typedFooterLinks = footerLinks as unknown as Record<string, readonly FooterLink[]>;
+
   const description =
     lang === "pt"
       ? "Plataforma de Inteligência Artificial para interpretar regulamentos urbanísticos e PDM de forma rápida, clara e auditável."
@@ -81,12 +84,13 @@ export function FooterSection() {
             {/* Brand Column */}
             <div className="col-span-2">
               <a href="#problem" className="inline-flex items-center gap-2 mb-6">
-                <Image
+                <img
                   src="/Fotos/logo.webp"
                   alt="ImoHarmonia"
                   width={40}
                   height={40}
                   className="w-9 h-9"
+                  loading="lazy"
                 />
                 <span className="text-xs text-muted-foreground font-mono">{lang.toUpperCase()}</span>
               </a>
@@ -104,11 +108,11 @@ export function FooterSection() {
             </div>
 
             {/* Link Columns */}
-            {Object.entries(footerLinks).map(([title, links]) => (
+            {Object.entries(typedFooterLinks).map(([title, links]) => (
               <div key={title}>
                 <h3 className="text-sm font-medium mb-6">{title}</h3>
                 <ul className="space-y-4">
-                  {links.map((link) => (
+                  {links.map((link: FooterLink) => (
                     <li key={link.name}>
                       <a
                         href={link.href}
