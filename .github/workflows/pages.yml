@@ -17,8 +17,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      BASE_PATH: ${{ vars.BASE_PATH }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,12 +24,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 11 # Alinhado com a versão 11 do teu PC
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22 # Versão recomendada para o Next.js atual
           cache: "pnpm"
           cache-dependency-path: pnpm-lock.yaml
 
@@ -44,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: out # Agora o Next.js vai voltar a criar esta pasta!
 
   deploy:
     needs: build

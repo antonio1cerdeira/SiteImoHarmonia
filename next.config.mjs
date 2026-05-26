@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: 'export', 
+  images: {
+    unoptimized: true, 
+  }
 };
-
-// Inicializa o ambiente de desenvolvimento para a Cloudflare
-import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
 
 export default nextConfig;
