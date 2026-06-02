@@ -14,8 +14,22 @@ export const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 const STORAGE_KEY = "imoharmonia_lang";
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>("pt");
+function setLanguageCookie(lang: Language) {
+  try {
+    document.cookie = `${STORAGE_KEY}=${lang}; path=/; max-age=31536000; samesite=lax`;
+  } catch {
+    // ignore
+  }
+}
+
+export function LanguageProvider({
+  children,
+  initialLang = "pt",
+}: {
+  children: React.ReactNode;
+  initialLang?: Language;
+}) {
+  const [lang, setLangState] = useState<Language>(initialLang);
   const [hasLoadedPreference, setHasLoadedPreference] = useState(false);
 
   const setLang = (next: Language) => setLangState(next);
@@ -40,6 +54,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
+    setLanguageCookie(lang);
     try {
       document.documentElement.lang = lang === "pt" ? "pt-PT" : "en";
     } catch {

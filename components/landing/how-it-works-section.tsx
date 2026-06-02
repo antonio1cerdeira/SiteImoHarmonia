@@ -175,39 +175,41 @@ export function HowItWorksSection() {
     lang === "pt"
       ? {
           eyebrow: "Processo de Verificação",
-          titleTop: "Carregas o documento.",
-          titleBottom: "A IA lê por ti.",
+          titleTop: "Do documento",
+          titleBottom: "à análise auditável.",
+          subtitle: "Submetes o caso. O sistema extrai factos. O motor aplica regras. A análise fica pronta para revisão.",
           steps: [
             {
               title: "Carregas o documento.",
-              body: "O motor do ImoHarmonia aceita PDFs técnicos e cartografia, processando o contexto geográfico e administrativo de imediato.",
+              body: "O motor do ImoHarmonia aceita memórias descritivas, PDFs técnicos e documentação relevante do projeto, associando o caso ao respetivo contexto municipal e urbanístico.",
             },
             {
-              title: "A IA lê por ti.",
-              body: "Análise semântica profunda. Identificamos índices de edificabilidade, afastamentos e condicionantes em milissegundos.",
+              title: "O sistema extrai factos urbanísticos.",
+              body: "A plataforma identifica os parâmetros urbanísticos relevantes e assinala dados ausentes ou incertos. Quando falta informação, o sistema não força uma conclusão.",
             },
             {
-              title: "Recebes um relatório auditável.",
-              body: "Um sumário executivo com links diretos para os artigos originais, pronto para ser anexado ao processo de licenciamento.",
+              title: "Recebes uma análise auditável.",
+              body: "A análise pode apoiar revisão interna, discussão técnica ou preparação de decisão, mantendo ligação entre factos, regras, evidência e resultado.",
             },
           ],
         }
       : {
           eyebrow: "Verification Flow",
-          titleTop: "You upload the document.",
-          titleBottom: "AI reads it for you.",
+          titleTop: "From document",
+          titleBottom: "to auditable analysis.",
+          subtitle: "You submit the case. The system extracts facts. The engine applies rules. Analysis is ready for review.",
           steps: [
             {
               title: "You upload the document.",
-              body: "ImoHarmonia accepts technical PDFs and maps, processing geographic and administrative context immediately.",
+              body: "ImoHarmonia accepts descriptive reports, technical PDFs and relevant project documentation, associating the case with its municipal and urban context.",
             },
             {
-              title: "AI reads it for you.",
-              body: "Deep semantic analysis. We identify indices, setbacks, and constraints in milliseconds.",
+              title: "The system extracts urban facts.",
+              body: "The platform identifies relevant urban parameters and flags missing or uncertain data. When information is lacking, the system doesn't force a conclusion.",
             },
             {
-              title: "You get an auditable report.",
-              body: "An executive summary with direct links to the original articles, ready to attach to the permitting process.",
+              title: "You get an auditable analysis.",
+              body: "The analysis can support internal review, technical discussion or decision preparation, maintaining connection between facts, rules, evidence and result.",
             },
           ],
         };
@@ -259,6 +261,13 @@ export function HowItWorksSection() {
             <br />
             <span className="text-background/50">{copy.titleBottom}</span>
           </h2>
+          <p
+            className={`mt-6 text-xl text-background/60 leading-relaxed transition-all duration-700 delay-150 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            {copy.subtitle}
+          </p>
         </div>
 
         {/* Main content */}

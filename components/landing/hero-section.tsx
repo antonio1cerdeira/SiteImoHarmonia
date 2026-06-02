@@ -13,16 +13,18 @@ export function HeroSection() {
   const copy =
     lang === "pt"
       ? {
-          eyebrow: "REGULATÓRIO × INTELIGÊNCIA ARTIFICIAL",
-          h1: ["IA para PDMs municipais.", "Rápido, Claro e", "Auditável."],
-          sub: "Menos tempo a procurar artigos. Mais confiança nas decisões.",
+          eyebrow: "REGULATÓRIO × CONFORMIDADE URBANÍSTICA",
+          h1: ["O motor de conformidade", "urbanística para projetos,", "PDMs e decisões técnicas."],
+          sub: "O ImoHarmonia transforma documentos técnicos, PDMs e regras municipais numa análise estruturada de conformidade urbanística, com factos, critérios explícitos, evidência e rastreabilidade.",
+          microcopy: "A plataforma apoia a decisão técnica. Não substitui o profissional nem emite parecer jurídico.",
           primary: "Pedir acesso antecipado →",
           secondary: "Ver como funciona ↓",
         }
       : {
-          eyebrow: "REGULATORY × ARTIFICIAL INTELLIGENCE",
-          h1: ["AI for municipal master plans.", "Fast, clear and", "Auditable."],
-          sub: "Less time hunting articles. More confidence in decisions.",
+          eyebrow: "REGULATORY × URBAN COMPLIANCE",
+          h1: ["The urban compliance engine", "for projects, plans and", "technical decisions."],
+          sub: "ImoHarmonia transforms technical documents, municipal master plans and municipal rules into structured urban compliance analysis, with facts, explicit criteria, evidence and traceability.",
+          microcopy: "The platform supports technical decision-making. It does not replace the professional nor provide legal advice.",
           primary: "Request early access →",
           secondary: "See how it works ↓",
         };
@@ -117,6 +119,15 @@ export function HeroSection() {
             </Button>
           </div>
         </div>
+
+        {/* Microcopy */}
+        <p 
+          className={`mt-16 text-sm text-muted-foreground max-w-md transition-all duration-700 delay-400 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          {copy.microcopy}
+        </p>
         
       </div>
       

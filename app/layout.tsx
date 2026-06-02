@@ -87,7 +87,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="pt-PT">
+    <html lang="pt-PT" suppressHydrationWarning>
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>{children}</LanguageProvider>

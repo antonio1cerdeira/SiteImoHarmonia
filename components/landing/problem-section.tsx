@@ -12,16 +12,17 @@ export function ProblemSection() {
     lang === "pt"
       ? {
           label: "Problema",
-          title: "Um PDM tem centenas de artigos. O teu projeto depende apenas de alguns. Encontrá-los devia ser automático!",
+          title: "Um projeto depende de poucos critérios críticos. Encontrá-los, cruzá-los e justificá-los ainda consome demasiado tempo.",
           desc:
-            "A fragmentação dos Planos Diretores Municipais em Portugal cria um labirinto de incerteza para arquitetos, engenheiros e promotores. A leitura manual é lenta, sujeita a erro humano e consome semanas em análises preliminares.",
+            "A análise urbanística continua demasiado dependente de leitura manual, comparação entre documentos, procura de artigos, validação de índices e interpretação repetida de regras municipais.\n\nNum contexto de simplificação do licenciamento e maior pressão sobre prazos, a análise técnica continua a exigir rigor, documentação e capacidade de justificação.\n\nO técnico precisa de confirmar áreas, índices, cérceas, afastamentos, usos, condicionantes e exceções legais. Pequenas falhas de leitura podem gerar pedidos de elementos, revisões sucessivas, atrasos e perda de confiança no processo.",
+          closing: "O ImoHarmonia organiza este processo em factos, regras e evidência.",
         }
       : {
           label: "Problem",
-          title:
-            "A municipal master plan has hundreds of articles. Your project depends on just a few. Finding them should be automatic.",
+          title: "A project depends on just a few critical criteria. Finding them, cross-referencing and justifying them still takes too much time.",
           desc:
-            "The fragmentation of municipal plans creates uncertainty for architects, engineers, and developers. Manual reading is slow, error-prone, and can take weeks during early-stage assessments.",
+            "Urban analysis remains too dependent on manual reading, document comparison, article searches, index validation and repeated interpretation of municipal rules.\n\nIn a context of licensing simplification and greater time pressure, technical analysis still requires rigor, documentation and justification capability.\n\nTechnicians need to confirm areas, indices, heights, setbacks, uses, constraints and legal exceptions. Small reading failures can lead to information requests, successive revisions, delays and loss of confidence in the process.",
+          closing: "ImoHarmonia organizes this process into facts, rules and evidence.",
         };
 
   useEffect(() => {
@@ -52,11 +53,18 @@ export function ProblemSection() {
             {copy.title}
           </h2>
           <p
-            className={`mt-8 text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-150 ${
+            className={`mt-8 text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-150 whitespace-pre-line ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             {copy.desc}
+          </p>
+          <p
+            className={`mt-8 text-xl text-foreground leading-relaxed transition-all duration-700 delay-300 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            {copy.closing}
           </p>
         </div>
       </div>

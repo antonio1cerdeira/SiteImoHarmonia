@@ -21,14 +21,14 @@ type FormState = {
 
 const copyByLang = {
   pt: {
-    title: "Interessado no projeto?",
-    description: "Para parcerias académicas, testes de acesso antecipado ou colaboração técnica.",
+    title: "Testa o ImoHarmonia num caso real.",
+    description: "Estamos a preparar pilotos com profissionais, gabinetes técnicos, promotores e entidades públicas que lidam diariamente com análise urbanística em Portugal.",
     nameLabel: "Nome",
     namePlaceholder: "O teu nome",
     emailLabel: "Email",
     emailPlaceholder: "nome@empresa.com",
     messageLabel: "Mensagem",
-    messagePlaceholder: "Diz-nos como gostarias de colaborar.",
+    messagePlaceholder: "Descreve brevemente o teu perfil, município de interesse e tipo de análise que gostarias de testar.",
     submitButton: "Enviar",
     submitting: "A enviar...",
     errors: {
@@ -41,18 +41,18 @@ const copyByLang = {
       networkError: "Erro de rede ao enviar a mensagem. Tenta novamente.",
     },
     success: "Mensagem enviada! Vamos responder em breve.",
-    ctaTitle: "Chega de interpretar regulamentos à mão!",
+    ctaTitle: "Testa o ImoHarmonia num caso real.",
     ctaButton: "Limpar",
   },
   en: {
-    title: "Interested in the project?",
-    description: "For academic partnerships, early-access tests, or technical collaboration.",
+    title: "Test ImoHarmonia on a real case.",
+    description: "We are preparing pilots with professionals, technical offices, developers and public entities that work daily with urban analysis in Portugal.",
     nameLabel: "Name",
     namePlaceholder: "Your name",
     emailLabel: "Email",
     emailPlaceholder: "name@company.com",
     messageLabel: "Message",
-    messagePlaceholder: "Tell us how you'd like to collaborate.",
+    messagePlaceholder: "Briefly describe your profile, municipality of interest, and type of analysis you'd like to test.",
     submitButton: "Send",
     submitting: "Sending...",
     errors: {
@@ -65,7 +65,7 @@ const copyByLang = {
       networkError: "Network error while sending. Please try again.",
     },
     success: "Message sent! We'll reply soon.",
-    ctaTitle: "Stop interpreting regulations by hand!",
+    ctaTitle: "Test ImoHarmonia on a real case.",
     ctaButton: "Clear",
   },
 } as const;
@@ -216,8 +216,6 @@ export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
               {/* Left content */}
               <div className="flex-1">
                 <h2 className="text-4xl lg:text-7xl font-display tracking-tight mb-8 leading-[0.95] text-center lg:text-left">
-                  {copy.ctaTitle}
-                  <br />
                   {copy.title}
                 </h2>
 

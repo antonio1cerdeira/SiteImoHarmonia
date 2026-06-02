@@ -14,27 +14,30 @@ type Feature = {
 const featuresPt: Feature[] = [
   {
     number: "01",
-    title: "Investigação aplicada",
+    title: "Extração de factos técnicos",
     description:
-      "O ImoHarmonia nasceu no Instituto Politécnico da Guarda com investigação real em Direito do Urbanismo e processamento de linguagem natural.",
+      "Identifica parâmetros urbanísticos relevantes a partir de memórias descritivas, PDFs e documentação de projeto: áreas, índices, pisos, cércea, usos e outros dados necessários à análise.",
     visual: "research",
   },
   {
     number: "02",
-    title: "Auditável",
-    description: "Cada verificação aponta para os artigos relevantes no PDF, para revisão técnica clara e rastreável.",
+    title: "Avaliação por regras estruturadas",
+    description:
+      "Cruza os factos extraídos com regras urbanísticas configuradas por município, zona, instrumento regulamentar e tipo de projeto.",
     visual: "auditable",
   },
   {
     number: "03",
-    title: "Menos risco",
-    description: "Menos erro humano e mais confiança nas análises preliminares, com contexto e critérios explícitos.",
+    title: "Evidência e rastreabilidade",
+    description:
+      "Cada verificação pode apontar para o trecho do documento analisado e para a fonte regulamentar relevante, permitindo revisão técnica clara.",
     visual: "risk",
   },
   {
     number: "04",
     title: "Foco em Portugal",
-    description: "Começa pelos municípios portugueses e pelos PDM municipais, pensado para o contexto real do urbanismo.",
+    description:
+      "Desenvolvido para a realidade urbanística portuguesa, com foco inicial em PDMs municipais, RGEU e processos de análise preliminar.",
     visual: "portugal",
   },
 ];
@@ -42,27 +45,30 @@ const featuresPt: Feature[] = [
 const featuresEn: Feature[] = [
   {
     number: "01",
-    title: "Applied research",
+    title: "Extraction of technical facts",
     description:
-      "ImoHarmonia was developed at Guarda Polytechnic Institute with real research in Urban Law and natural language processing.",
+      "Identifies relevant urban parameters from descriptive reports, PDFs and project documentation: areas, indices, floors, height, uses and other necessary analysis data.",
     visual: "research",
   },
   {
     number: "02",
-    title: "Auditable",
-    description: "Each check points to relevant PDF articles for clear, traceable technical review.",
+    title: "Evaluation by structured rules",
+    description:
+      "Crosses extracted facts with urban rules configured by municipality, zone, regulatory instrument and project type.",
     visual: "auditable",
   },
   {
     number: "03",
-    title: "Lower risk",
-    description: "Less human error and more confidence in early assessments, with explicit context and criteria.",
+    title: "Evidence and traceability",
+    description:
+      "Each check can point to the section of the analyzed document and to the relevant regulatory source, allowing clear technical review.",
     visual: "risk",
   },
   {
     number: "04",
-    title: "Portugal first",
-    description: "Starts with Portuguese municipalities and municipal master plans, built for real-world workflows.",
+    title: "Portugal focus",
+    description:
+      "Built for Portuguese urban reality, with initial focus on municipal master plans, building regulations and preliminary analysis processes.",
     visual: "portugal",
   },
 ];
@@ -108,12 +114,10 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 py-12 lg:py-20 border-b border-foreground/10">
-        {/* Number */}
         <div className="shrink-0">
           <span className="font-mono text-sm text-muted-foreground">{feature.number}</span>
         </div>
-        
-        {/* Content */}
+
         <div className="flex-1 grid lg:grid-cols-2 gap-8 items-center">
           <div>
             <h3 className="text-3xl lg:text-4xl font-display mb-4 group-hover:translate-x-2 transition-transform duration-500">
@@ -123,8 +127,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
               {feature.description}
             </p>
           </div>
-          
-          {/* Visual */}
+
           <div className="flex justify-center lg:justify-end">
             <div className="w-48 h-40 text-foreground">
               <AnimatedVisual type={feature.visual} />
@@ -141,6 +144,22 @@ export function FeaturesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const features = lang === "pt" ? featuresPt : featuresEn;
+  const copy =
+    lang === "pt"
+      ? {
+          sectionLabel: "Funcionalidades",
+          titleLine1: "Análise estruturada.",
+          titleLine2: "Não uma resposta genérica.",
+          description:
+            "O ImoHarmonia não tenta responder como um chatbot jurídico. Estrutura a análise urbanística para revisão profissional.",
+        }
+      : {
+          sectionLabel: "Features",
+          titleLine1: "Structured analysis.",
+          titleLine2: "Not a generic answer.",
+          description:
+            "ImoHarmonia doesn't try to answer like a legal chatbot. It structures urban analysis for professional review.",
+        };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -155,32 +174,31 @@ export function FeaturesSection() {
   }, []);
 
   return (
-    <section
-      id="features"
-      ref={sectionRef}
-      className="relative py-24 lg:py-32 scroll-mt-28"
-    >
+    <section id="features" ref={sectionRef} className="relative py-24 lg:py-32 scroll-mt-28">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Header */}
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
             <span className="w-8 h-px bg-foreground/30" />
-            Funcionalidades
+            {copy.sectionLabel}
           </span>
           <h2
-            className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
+            className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 mb-4 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            {lang === "pt" ? "Rigor académico." : "Academic rigor."}
+            {copy.titleLine1}
             <br />
-            <span className="text-muted-foreground">
-              {lang === "pt" ? "Não uma ideia de fim de semana." : "Not a weekend idea."}
-            </span>
+            <span className="text-muted-foreground">{copy.titleLine2}</span>
           </h2>
+          <p
+            className={`text-xl text-muted-foreground leading-relaxed max-w-3xl transition-all duration-700 delay-150 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            {copy.description}
+          </p>
         </div>
 
-        {/* Features List */}
         <div>
           {features.map((feature, index) => (
             <FeatureCard key={feature.number} feature={feature} index={index} />

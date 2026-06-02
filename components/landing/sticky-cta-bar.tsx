@@ -12,12 +12,12 @@ export function StickyCtaBar() {
   const copy =
     lang === "pt"
       ? {
-          line: "Menos tempo a procurar artigos. Mais confiança nas decisões.",
+          line: "Menos tempo a procurar artigos. Mais clareza antes de decidir.",
           primary: "Pedir acesso antecipado →",
           secondary: "Ver como funciona ↓",
         }
       : {
-          line: "Less time hunting articles. More confidence in decisions.",
+          line: "Less time searching articles. More clarity before deciding.",
           primary: "Request early access →",
           secondary: "See how it works ↓",
         };

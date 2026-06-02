@@ -3,7 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 
-const integrations = [
+type AudienceItem = { name: string; category: string };
+
+const integrationsPt: AudienceItem[] = [
   { name: "Arquitetos", category: "Projetos preliminares" },
   { name: "Engenheiros", category: "Validação técnica" },
   { name: "Técnicos municipais", category: "Leitura de PDM" },
@@ -16,10 +18,24 @@ const integrations = [
   { name: "Urbanismo Descomplicado", category: "Marca" },
 ];
 
+const integrationsEn: AudienceItem[] = [
+  { name: "Architects", category: "Preliminary projects" },
+  { name: "Engineers", category: "Technical validation" },
+  { name: "Municipal technicians", category: "Master plan review" },
+  { name: "Developers", category: "Risk analysis" },
+  { name: "Portuguese municipalities", category: "Initial focus" },
+  { name: "Urban law", category: "Legal grounding" },
+  { name: "NLP", category: "Natural language processing" },
+  { name: "Auditable", category: "Clear report" },
+  { name: "Master plans", category: "Planning regulation" },
+  { name: "Urbanism Simplified", category: "Brand" },
+];
+
 export function IntegrationsSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const { lang } = useLanguage();
+  const integrations = lang === "pt" ? integrationsPt : integrationsEn;
 
   const copy =
     lang === "pt"
@@ -51,7 +67,6 @@ export function IntegrationsSection() {
   return (
     <section id="integrations" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden scroll-mt-28">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Header */}
         <div
           className={`text-center max-w-3xl mx-auto mb-16 lg:mb-24 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -67,14 +82,10 @@ export function IntegrationsSection() {
             <br />
             {copy.title[1]}
           </h2>
-          <p className="text-xl text-muted-foreground">
-            {copy.description}
-          </p>
+          <p className="text-xl text-muted-foreground">{copy.description}</p>
         </div>
-
       </div>
-      
-      {/* Full-width marquees outside container */}
+
       <div className="w-full mb-6">
         <div className="flex gap-6 marquee">
           {[...Array(2)].map((_, setIndex) => (
@@ -94,8 +105,7 @@ export function IntegrationsSection() {
           ))}
         </div>
       </div>
-      
-      {/* Reverse marquee */}
+
       <div className="w-full">
         <div className="flex gap-6 marquee-reverse">
           {[...Array(2)].map((_, setIndex) => (
