@@ -92,7 +92,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>{children}</LanguageProvider>
         <meta name="hcaptcha-sitekey" content="63e0089c-4104-42c6-a9b2-b0023c323cc6" />
-        <meta name="web3forms-key" content="9c1bde2c-ec40-4a65-9b10-e07747b1081e" />
+        <meta name="web3forms-key" content="9c1bde2c-ec40-4a65-90a3-9b95c06e5b66" />
       </body>
     </html>
   )
