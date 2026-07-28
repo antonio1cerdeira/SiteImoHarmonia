@@ -87,9 +87,9 @@ export default function RootLayout({
   return (
     <html lang="pt-PT" suppressHydrationWarning>
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+        {/* BUILD: 63e1902 - if you see this, new build is active */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>{children}</LanguageProvider>
-        {/* DEBUG: hardcoded meta tags - remove after fixing env vars */}
         <meta name="hcaptcha-sitekey" content="63e0089c-4104-42c6-a9b2-b0023c323cc6" />
         <meta name="web3forms-key" content="9c1bde2c-ec40-4a65-9b10-e07747b1081e" />
       </body>
