@@ -91,7 +91,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const hcaptchaElId = useId();
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const copy = lang === "pt" ? copyByLang.pt : copyByLang.en;
 
@@ -125,18 +125,27 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       if (hcaptcha && typeof hcaptcha.render === "function") {
         console.log("[hCaptcha] API ready, rendering widget...");
         setCaptchaReady(true);
-        // Explicitly render the widget
-        try {
-          hcaptcha.render(hcaptchaElId, {
-            sitekey: hcaptchaSitekey,
-            callback: "__imoHarmoniaOnHcaptchaVerified",
-            "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
-          });
-          console.log("[hCaptcha] Widget rendered successfully");
-        } catch (e) {
-          console.error("[hCaptcha] Render error:", e);
-          setCaptchaLoadError(true);
-        }
+        // Wait for next tick to ensure DOM is ready
+        requestAnimationFrame(() => {
+          const container = captchaContainerRef.current;
+          console.log("[hCaptcha] Container element:", container);
+          if (!container) {
+            console.error("[hCaptcha] Container not found in DOM");
+            setCaptchaLoadError(true);
+            return;
+          }
+          try {
+            hcaptcha.render(container, {
+              sitekey: hcaptchaSitekey,
+              callback: "__imoHarmoniaOnHcaptchaVerified",
+              "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
+            });
+            console.log("[hCaptcha] Widget rendered successfully");
+          } catch (e) {
+            console.error("[hCaptcha] Render error:", e);
+            setCaptchaLoadError(true);
+          }
+        });
         return;
       }
       const timeout = setTimeout(checkReady, 200);
@@ -160,7 +169,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       clearTimeout(timeoutId);
       clearTimeout(failTimeout);
     };
-  }, [hcaptchaSitekey, hcaptchaElId]);
+  }, [hcaptchaSitekey]);
 
   useEffect(() => {
     (window as any).__imoHarmoniaOnHcaptchaVerified = (token: string) => {
@@ -363,7 +372,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
                         <span>{lang === "pt" ? "A carregar verificação de segurança..." : "Loading security verification..."}</span>
                       </div>
                     ) : (
-                      <div id={hcaptchaElId} className="h-captcha min-h-[80px]" />
+                      <div ref={captchaContainerRef} className="h-captcha min-h-[80px]" />
                     )}
 
                     <div className="flex flex-col sm:flex-row items-start gap-4">
