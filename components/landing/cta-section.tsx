@@ -110,9 +110,9 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     console.log("[CTA] Web3Forms key prop:", web3formsKey ? "present" : "EMPTY");
   }, [hcaptchaSitekey, web3formsKey]);
 
-  // Monitor hCaptcha script loading and render widget
+  // Monitor hCaptcha script loading
   useEffect(() => {
-    console.log("[hCaptcha] useEffect triggered, sitekey:", !!hcaptchaSitekey);
+    console.log("[hCaptcha] Script monitor useEffect, sitekey:", !!hcaptchaSitekey);
     if (!hcaptchaSitekey) {
       console.error("[hCaptcha] No sitekey, setting error");
       setCaptchaLoadError(true);
@@ -123,29 +123,8 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       const hcaptcha = (window as any).hcaptcha;
       console.log("[hCaptcha] Checking ready, hcaptcha exists:", !!hcaptcha, "render exists:", !!hcaptcha?.render);
       if (hcaptcha && typeof hcaptcha.render === "function") {
-        console.log("[hCaptcha] API ready, rendering widget...");
+        console.log("[hCaptcha] API ready");
         setCaptchaReady(true);
-        // Wait for next tick to ensure DOM is ready
-        requestAnimationFrame(() => {
-          const container = captchaContainerRef.current;
-          console.log("[hCaptcha] Container element:", container);
-          if (!container) {
-            console.error("[hCaptcha] Container not found in DOM");
-            setCaptchaLoadError(true);
-            return;
-          }
-          try {
-            hcaptcha.render(container, {
-              sitekey: hcaptchaSitekey,
-              callback: "__imoHarmoniaOnHcaptchaVerified",
-              "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
-            });
-            console.log("[hCaptcha] Widget rendered successfully");
-          } catch (e) {
-            console.error("[hCaptcha] Render error:", e);
-            setCaptchaLoadError(true);
-          }
-        });
         return;
       }
       const timeout = setTimeout(checkReady, 200);
@@ -170,6 +149,30 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       clearTimeout(failTimeout);
     };
   }, [hcaptchaSitekey]);
+
+  // Render widget when container is ready
+  useEffect(() => {
+    if (!captchaReady || !captchaContainerRef.current) {
+      console.log("[hCaptcha] Render useEffect skipped, ready:", captchaReady, "container:", !!captchaContainerRef.current);
+      return;
+    }
+
+    console.log("[hCaptcha] Render useEffect triggered");
+    const hcaptcha = (window as any).hcaptcha;
+    const container = captchaContainerRef.current;
+
+    try {
+      hcaptcha.render(container, {
+        sitekey: hcaptchaSitekey,
+        callback: "__imoHarmoniaOnHcaptchaVerified",
+        "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
+      });
+      console.log("[hCaptcha] Widget rendered successfully");
+    } catch (e) {
+      console.error("[hCaptcha] Render error:", e);
+      setCaptchaLoadError(true);
+    }
+  }, [captchaReady, hcaptchaSitekey]);
 
   useEffect(() => {
     (window as any).__imoHarmoniaOnHcaptchaVerified = (token: string) => {
