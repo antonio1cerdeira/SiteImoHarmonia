@@ -114,11 +114,6 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
   // Monitor hCaptcha script loading
   useEffect(() => {
     console.log("[hCaptcha] Script monitor useEffect, sitekey:", !!hcaptchaSitekey);
-    if (!hcaptchaSitekey) {
-      console.error("[hCaptcha] No sitekey, setting error");
-      setCaptchaLoadError(true);
-      return;
-    }
 
     const checkReady = () => {
       const hcaptcha = (window as any).hcaptcha;
@@ -150,6 +145,19 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       clearTimeout(failTimeout);
     };
   }, [hcaptchaSitekey]);
+
+  // Set error if no sitekey after env vars loaded
+  useEffect(() => {
+    if (hcaptchaSitekey === "" && !captchaReady && !captchaLoadError) {
+      // Only set error if we've waited long enough (hcaptcha script should have loaded by now)
+      const timeout = setTimeout(() => {
+        if (!captchaReady && !(window as any).hcaptcha) {
+          setCaptchaLoadError(true);
+        }
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [hcaptchaSitekey, captchaReady, captchaLoadError]);
 
   // Render widget when shouldRender is true
   useEffect(() => {
