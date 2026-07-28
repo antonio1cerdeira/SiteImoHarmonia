@@ -269,15 +269,29 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
         "h-captcha-response": captchaToken,
       };
 
+      console.log("[Web3Forms] Sending payload:", {
+        access_key: web3formsKey ? "present" : "MISSING",
+        name: payload.name,
+        email: payload.email,
+        hasCaptcha: !!captchaToken,
+      });
+
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
-      if (!res.ok || !data?.success) {
-        setStatus({ type: "error", message: copy.errors.sendFailed });
+      console.log("[Web3Forms] Response status:", res.status);
+      const data = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
+      console.log("[Web3Forms] Response data:", data);
+
+      if (!res.ok) {
+        setStatus({ type: "error", message: copy.errors.sendFailed + ` (HTTP ${res.status})` });
+        return;
+      }
+      if (!data?.success) {
+        setStatus({ type: "error", message: data?.message || copy.errors.sendFailed });
         return;
       }
 
