@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { LanguageProvider } from "@/components/language-provider"
+import './globals.css'
 
 const instrumentSans = Instrument_Sans({ 
   subsets: ["latin"],
