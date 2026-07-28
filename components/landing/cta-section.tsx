@@ -9,9 +9,25 @@ import Script from "next/script";
 import { useLanguage } from "@/hooks/useLanguage";
 
 type CtaSectionProps = {
-  web3formsKey: string;
-  hcaptchaSitekey: string;
+  web3formsKey?: string;
+  hcaptchaSitekey?: string;
 };
+
+function useEnvVars() {
+  const [vars, setVars] = useState({ web3formsKey: "", hcaptchaSitekey: "" });
+
+  useEffect(() => {
+    const web3formsMeta = document.querySelector('meta[name="web3forms-key"]');
+    const hcaptchaMeta = document.querySelector('meta[name="hcaptcha-sitekey"]');
+
+    setVars({
+      web3formsKey: web3formsMeta?.getAttribute("content") || "",
+      hcaptchaSitekey: hcaptchaMeta?.getAttribute("content") || "",
+    });
+  }, []);
+
+  return vars;
+}
 
 type FormState = {
   name: string;
@@ -70,7 +86,8 @@ const copyByLang = {
   },
 } as const;
 
-export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
+export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitekey }: CtaSectionProps) {
+  const { web3formsKey, hcaptchaSitekey } = useEnvVars();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
