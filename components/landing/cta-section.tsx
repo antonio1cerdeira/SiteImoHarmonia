@@ -87,6 +87,12 @@ export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
   const [captchaReady, setCaptchaReady] = useState(false);
   const [captchaLoadError, setCaptchaLoadError] = useState(false);
 
+  // Debug: log when component mounts
+  useEffect(() => {
+    console.log("[CTA] hCaptcha sitekey prop:", hcaptchaSitekey ? `${hcaptchaSitekey.slice(0, 8)}...` : "EMPTY");
+    console.log("[CTA] Web3Forms key prop:", web3formsKey ? "present" : "EMPTY");
+  }, [hcaptchaSitekey, web3formsKey]);
+
   // Monitor hCaptcha script loading
   useEffect(() => {
     if (!hcaptchaSitekey) {
