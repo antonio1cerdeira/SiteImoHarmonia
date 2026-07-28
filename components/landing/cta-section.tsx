@@ -103,6 +103,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
   const [captchaToken, setCaptchaToken] = useState<string>("");
   const [captchaReady, setCaptchaReady] = useState(false);
   const [captchaLoadError, setCaptchaLoadError] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   // Debug: log when component mounts
   useEffect(() => {
@@ -121,10 +122,11 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
 
     const checkReady = () => {
       const hcaptcha = (window as any).hcaptcha;
-      console.log("[hCaptcha] Checking ready, hcaptcha exists:", !!hcaptcha, "render exists:", !!hcaptcha?.render);
       if (hcaptcha && typeof hcaptcha.render === "function") {
         console.log("[hCaptcha] API ready");
         setCaptchaReady(true);
+        // Wait for next render cycle so the container element exists
+        setTimeout(() => setShouldRender(true), 0);
         return;
       }
       const timeout = setTimeout(checkReady, 200);
@@ -137,7 +139,6 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     // Give up after 15 seconds
     const failTimeout = setTimeout(() => {
       const hcaptcha = (window as any).hcaptcha;
-      console.log("[hCaptcha] Timeout reached, hcaptcha exists:", !!hcaptcha);
       if (!hcaptcha) {
         setCaptchaLoadError(true);
       }
@@ -150,14 +151,13 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     };
   }, [hcaptchaSitekey]);
 
-  // Render widget when container is ready
+  // Render widget when shouldRender is true
   useEffect(() => {
-    if (!captchaReady || !captchaContainerRef.current) {
-      console.log("[hCaptcha] Render useEffect skipped, ready:", captchaReady, "container:", !!captchaContainerRef.current);
+    if (!shouldRender || !captchaContainerRef.current) {
       return;
     }
 
-    console.log("[hCaptcha] Render useEffect triggered");
+    console.log("[hCaptcha] Rendering widget");
     const hcaptcha = (window as any).hcaptcha;
     const container = captchaContainerRef.current;
 
@@ -167,12 +167,12 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
         callback: "__imoHarmoniaOnHcaptchaVerified",
         "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
       });
-      console.log("[hCaptcha] Widget rendered successfully");
+      console.log("[hCaptcha] Widget rendered");
     } catch (e) {
       console.error("[hCaptcha] Render error:", e);
       setCaptchaLoadError(true);
     }
-  }, [captchaReady, hcaptchaSitekey]);
+  }, [shouldRender, hcaptchaSitekey]);
 
   useEffect(() => {
     (window as any).__imoHarmoniaOnHcaptchaVerified = (token: string) => {
@@ -369,13 +369,13 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
                             : "Could not load hCaptcha. Check your connection or try again later."}
                         </p>
                       </div>
-                    ) : !captchaReady ? (
+                    ) : shouldRender ? (
+                      <div ref={captchaContainerRef} className="h-captcha min-h-[80px]" />
+                    ) : (
                       <div className="flex items-center gap-3 p-4 text-sm text-muted-foreground">
                         <div className="w-4 h-4 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
                         <span>{lang === "pt" ? "A carregar verificação de segurança..." : "Loading security verification..."}</span>
                       </div>
-                    ) : (
-                      <div ref={captchaContainerRef} className="h-captcha min-h-[80px]" />
                     )}
 
                     <div className="flex flex-col sm:flex-row items-start gap-4">
