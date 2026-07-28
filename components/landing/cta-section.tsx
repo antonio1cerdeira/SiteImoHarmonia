@@ -282,12 +282,19 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
         body: JSON.stringify(payload),
       });
 
-      console.log("[Web3Forms] Response status:", res.status);
-      const data = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
-      console.log("[Web3Forms] Response data:", data);
+      let data = null;
+      try {
+        data = (await res.json()) as { success?: boolean; message?: string };
+      } catch (e) {
+        console.error("[Web3Forms] Failed to parse JSON response:", e);
+        setStatus({ type: "error", message: copy.errors.sendFailed + " (invalid response)" });
+        return;
+      }
+
+      console.log("[Web3Forms] Response status:", res.status, "data:", data);
 
       if (!res.ok) {
-        setStatus({ type: "error", message: copy.errors.sendFailed + ` (HTTP ${res.status})` });
+        setStatus({ type: "error", message: data?.message || copy.errors.sendFailed + ` (HTTP ${res.status})` });
         return;
       }
       if (!data?.success) {
