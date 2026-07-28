@@ -91,8 +91,8 @@ export default function RootLayout({
         {/* BUILD: 63e1902 - if you see this, new build is active */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>{children}</LanguageProvider>
-        <meta name="hcaptcha-sitekey" content={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY || "63e0089c-4104-42c6-a9b2-b0023c323cc6"} />
-        <meta name="web3forms-key" content={process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "9c1bde2c-ec40-4a65-90a3-9b95c06e5b66"} />
+        <meta name="hcaptcha-sitekey" content="63e0089c-4104-42c6-a9b2-b0023c323cc6" />
+        <meta name="web3forms-key" content="9c1bde2c-ec40-4a65-90a3-9b95c06e5b66" />
       </body>
     </html>
   )
