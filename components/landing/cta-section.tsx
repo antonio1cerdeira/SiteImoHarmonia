@@ -112,23 +112,30 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
 
   // Monitor hCaptcha script loading and render widget
   useEffect(() => {
+    console.log("[hCaptcha] useEffect triggered, sitekey:", !!hcaptchaSitekey);
     if (!hcaptchaSitekey) {
+      console.error("[hCaptcha] No sitekey, setting error");
       setCaptchaLoadError(true);
       return;
     }
 
     const checkReady = () => {
-      if ((window as any).hcaptcha && typeof (window as any).hcaptcha.render === "function") {
+      const hcaptcha = (window as any).hcaptcha;
+      console.log("[hCaptcha] Checking ready, hcaptcha exists:", !!hcaptcha, "render exists:", !!hcaptcha?.render);
+      if (hcaptcha && typeof hcaptcha.render === "function") {
+        console.log("[hCaptcha] API ready, rendering widget...");
         setCaptchaReady(true);
         // Explicitly render the widget
         try {
-          (window as any).hcaptcha.render(hcaptchaElId, {
+          hcaptcha.render(hcaptchaElId, {
             sitekey: hcaptchaSitekey,
             callback: "__imoHarmoniaOnHcaptchaVerified",
             "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
           });
+          console.log("[hCaptcha] Widget rendered successfully");
         } catch (e) {
           console.error("[hCaptcha] Render error:", e);
+          setCaptchaLoadError(true);
         }
         return;
       }
@@ -141,7 +148,9 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
 
     // Give up after 15 seconds
     const failTimeout = setTimeout(() => {
-      if (!(window as any).hcaptcha) {
+      const hcaptcha = (window as any).hcaptcha;
+      console.log("[hCaptcha] Timeout reached, hcaptcha exists:", !!hcaptcha);
+      if (!hcaptcha) {
         setCaptchaLoadError(true);
       }
     }, 15000);
