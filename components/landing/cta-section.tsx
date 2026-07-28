@@ -105,22 +105,17 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
   const [captchaLoadError, setCaptchaLoadError] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
 
-  // Debug: log when component mounts
-  useEffect(() => {
-    console.log("[CTA] hCaptcha sitekey prop:", hcaptchaSitekey ? `${hcaptchaSitekey.slice(0, 8)}...` : "EMPTY");
-    console.log("[CTA] Web3Forms key prop:", web3formsKey ? "present" : "EMPTY");
-  }, [hcaptchaSitekey, web3formsKey]);
-
   // Monitor hCaptcha script loading
   useEffect(() => {
-    console.log("[hCaptcha] Script monitor useEffect, sitekey:", !!hcaptchaSitekey);
+    if (!hcaptchaSitekey) {
+      setCaptchaLoadError(true);
+      return;
+    }
 
     const checkReady = () => {
       const hcaptcha = (window as any).hcaptcha;
       if (hcaptcha && typeof hcaptcha.render === "function") {
-        console.log("[hCaptcha] API ready");
         setCaptchaReady(true);
-        // Wait for next render cycle so the container element exists
         setTimeout(() => setShouldRender(true), 0);
         return;
       }
@@ -130,13 +125,8 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     };
 
     const timeoutId = checkReady();
-
-    // Give up after 15 seconds
     const failTimeout = setTimeout(() => {
-      const hcaptcha = (window as any).hcaptcha;
-      if (!hcaptcha) {
-        setCaptchaLoadError(true);
-      }
+      if (!(window as any).hcaptcha) setCaptchaLoadError(true);
     }, 15000);
     failTimeout.unref?.();
 
@@ -146,38 +136,18 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     };
   }, [hcaptchaSitekey]);
 
-  // Set error if no sitekey after env vars loaded
+  // Render hCaptcha widget when container is ready
   useEffect(() => {
-    if (hcaptchaSitekey === "" && !captchaReady && !captchaLoadError) {
-      // Only set error if we've waited long enough (hcaptcha script should have loaded by now)
-      const timeout = setTimeout(() => {
-        if (!captchaReady && !(window as any).hcaptcha) {
-          setCaptchaLoadError(true);
-        }
-      }, 5000);
-      return () => clearTimeout(timeout);
-    }
-  }, [hcaptchaSitekey, captchaReady, captchaLoadError]);
+    if (!shouldRender || !captchaContainerRef.current) return;
 
-  // Render widget when shouldRender is true
-  useEffect(() => {
-    if (!shouldRender || !captchaContainerRef.current) {
-      return;
-    }
-
-    console.log("[hCaptcha] Rendering widget");
     const hcaptcha = (window as any).hcaptcha;
-    const container = captchaContainerRef.current;
-
     try {
-      hcaptcha.render(container, {
+      hcaptcha.render(captchaContainerRef.current, {
         sitekey: hcaptchaSitekey,
         callback: "__imoHarmoniaOnHcaptchaVerified",
         "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
       });
-      console.log("[hCaptcha] Widget rendered");
-    } catch (e) {
-      console.error("[hCaptcha] Render error:", e);
+    } catch {
       setCaptchaLoadError(true);
     }
   }, [shouldRender, hcaptchaSitekey]);
@@ -269,14 +239,6 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
         "h-captcha-response": captchaToken,
       };
 
-      console.log("[Web3Forms] Sending payload:", {
-        access_key: web3formsKey ? "present" : "MISSING",
-        name: payload.name,
-        email: payload.email,
-        hasCaptcha: !!captchaToken,
-        captchaTokenLength: captchaToken?.length || 0,
-      });
-
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -286,13 +248,10 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       let data = null;
       try {
         data = (await res.json()) as { success?: boolean; message?: string };
-      } catch (e) {
-        console.error("[Web3Forms] Failed to parse JSON response:", e);
+      } catch {
         setStatus({ type: "error", message: copy.errors.sendFailed + " (invalid response)" });
         return;
       }
-
-      console.log("[Web3Forms] Response status:", res.status, "data:", data);
 
       if (!res.ok) {
         setStatus({ type: "error", message: data?.message || copy.errors.sendFailed + ` (HTTP ${res.status})` });
