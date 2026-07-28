@@ -274,6 +274,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
         name: payload.name,
         email: payload.email,
         hasCaptcha: !!captchaToken,
+        captchaTokenLength: captchaToken?.length || 0,
       });
 
       const res = await fetch("https://api.web3forms.com/submit", {
