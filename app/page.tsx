@@ -12,8 +12,14 @@ import { FooterSection } from "@/components/landing/footer-section";
 import { StickyCtaBar } from "@/components/landing/sticky-cta-bar";
 
 export default function Home() {
-  const web3formsKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "";
-  const hcaptchaSitekey = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY ?? "";
+  const web3formsKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "";
+  const hcaptchaSitekey = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY || "";
+
+  // Debug: log no console do build para verificar se as variáveis estão disponíveis
+  if (typeof window === "undefined") {
+    console.log("[BUILD] hCaptcha sitekey available:", !!hcaptchaSitekey);
+    console.log("[BUILD] Web3Forms key available:", !!web3formsKey);
+  }
 
   return (
     <main className="relative min-h-screen overflow-x-hidden noise-overlay">
