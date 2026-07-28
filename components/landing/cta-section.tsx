@@ -110,7 +110,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     console.log("[CTA] Web3Forms key prop:", web3formsKey ? "present" : "EMPTY");
   }, [hcaptchaSitekey, web3formsKey]);
 
-  // Monitor hCaptcha script loading
+  // Monitor hCaptcha script loading and render widget
   useEffect(() => {
     if (!hcaptchaSitekey) {
       setCaptchaLoadError(true);
@@ -120,6 +120,16 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     const checkReady = () => {
       if ((window as any).hcaptcha && typeof (window as any).hcaptcha.render === "function") {
         setCaptchaReady(true);
+        // Explicitly render the widget
+        try {
+          (window as any).hcaptcha.render(hcaptchaElId, {
+            sitekey: hcaptchaSitekey,
+            callback: "__imoHarmoniaOnHcaptchaVerified",
+            "expired-callback": "__imoHarmoniaOnHcaptchaExpired",
+          });
+        } catch (e) {
+          console.error("[hCaptcha] Render error:", e);
+        }
         return;
       }
       const timeout = setTimeout(checkReady, 200);
@@ -141,7 +151,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
       clearTimeout(timeoutId);
       clearTimeout(failTimeout);
     };
-  }, [hcaptchaSitekey]);
+  }, [hcaptchaSitekey, hcaptchaElId]);
 
   useEffect(() => {
     (window as any).__imoHarmoniaOnHcaptchaVerified = (token: string) => {
@@ -344,13 +354,7 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
                         <span>{lang === "pt" ? "A carregar verificação de segurança..." : "Loading security verification..."}</span>
                       </div>
                     ) : (
-                      <div
-                        id={hcaptchaElId}
-                        className="h-captcha"
-                        data-sitekey={hcaptchaSitekey}
-                        data-callback="__imoHarmoniaOnHcaptchaVerified"
-                        data-expired-callback="__imoHarmoniaOnHcaptchaExpired"
-                      />
+                      <div id={hcaptchaElId} className="h-captcha min-h-[80px]" />
                     )}
 
                     <div className="flex flex-col sm:flex-row items-start gap-4">
