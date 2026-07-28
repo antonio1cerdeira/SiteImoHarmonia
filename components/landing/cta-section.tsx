@@ -118,23 +118,23 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
     }
 
     const checkReady = () => {
-      if ((window as any).hcaptcha) {
+      if ((window as any).hcaptcha && typeof (window as any).hcaptcha.render === "function") {
         setCaptchaReady(true);
         return;
       }
-      const timeout = setTimeout(checkReady, 100);
+      const timeout = setTimeout(checkReady, 200);
       timeout.unref?.();
       return timeout;
     };
 
     const timeoutId = checkReady();
 
-    // Give up after 10 seconds
+    // Give up after 15 seconds
     const failTimeout = setTimeout(() => {
       if (!(window as any).hcaptcha) {
         setCaptchaLoadError(true);
       }
-    }, 10000);
+    }, 15000);
     failTimeout.unref?.();
 
     return () => {
@@ -255,7 +255,17 @@ export function CtaSection({ web3formsKey: _propKey, hcaptchaSitekey: _propSitek
 
   return (
     <section id="contact" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden scroll-mt-28">
-      <Script src="https://js.hcaptcha.com/1/api.js" async defer />
+      <Script
+        src="https://js.hcaptcha.com/1/api.js"
+        onLoad={() => {
+          console.log("[hCaptcha] Script loaded");
+          setCaptchaReady(true);
+        }}
+        onError={() => {
+          console.error("[hCaptcha] Script failed to load");
+          setCaptchaLoadError(true);
+        }}
+      />
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div
           className={`relative border border-foreground transition-all duration-1000 ${
