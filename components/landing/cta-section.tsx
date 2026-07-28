@@ -84,6 +84,41 @@ export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
     type: "idle",
   });
   const [captchaToken, setCaptchaToken] = useState<string>("");
+  const [captchaReady, setCaptchaReady] = useState(false);
+  const [captchaLoadError, setCaptchaLoadError] = useState(false);
+
+  // Monitor hCaptcha script loading
+  useEffect(() => {
+    if (!hcaptchaSitekey) {
+      setCaptchaLoadError(true);
+      return;
+    }
+
+    const checkReady = () => {
+      if ((window as any).hcaptcha) {
+        setCaptchaReady(true);
+        return;
+      }
+      const timeout = setTimeout(checkReady, 100);
+      timeout.unref?.();
+      return timeout;
+    };
+
+    const timeoutId = checkReady();
+
+    // Give up after 10 seconds
+    const failTimeout = setTimeout(() => {
+      if (!(window as any).hcaptcha) {
+        setCaptchaLoadError(true);
+      }
+    }, 10000);
+    failTimeout.unref?.();
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(failTimeout);
+    };
+  }, [hcaptchaSitekey]);
 
   useEffect(() => {
     (window as any).__imoHarmoniaOnHcaptchaVerified = (token: string) => {
@@ -132,6 +167,8 @@ export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
     if (!emailOk) return copy.errors.invalidEmail;
     if (form.message.trim().length < 10) return copy.errors.shortMessage;
+    if (captchaLoadError) return copy.errors.captcha;
+    if (!captchaReady) return copy.errors.captcha;
     if (!captchaToken) return copy.errors.captcha;
     if (!web3formsKey) return copy.errors.missingKey;
     return null;
@@ -259,13 +296,29 @@ export function CtaSection({ web3formsKey, hcaptchaSitekey }: CtaSectionProps) {
                   </label>
 
                   <div className="flex flex-col gap-4">
-                    <div
-                      id={hcaptchaElId}
-                      className="h-captcha"
-                      data-sitekey={hcaptchaSitekey}
-                      data-callback="__imoHarmoniaOnHcaptchaVerified"
-                      data-expired-callback="__imoHarmoniaOnHcaptchaExpired"
-                    />
+                    {captchaLoadError ? (
+                      <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-600">
+                        <p className="font-medium">{lang === "pt" ? "hCaptcha indisponível" : "hCaptcha unavailable"}</p>
+                        <p className="text-xs text-red-600/80 mt-1">
+                          {lang === "pt"
+                            ? "Não foi possível carregar o hCaptcha. Verifica a tua ligação ou tenta mais tarde."
+                            : "Could not load hCaptcha. Check your connection or try again later."}
+                        </p>
+                      </div>
+                    ) : !captchaReady ? (
+                      <div className="flex items-center gap-3 p-4 text-sm text-muted-foreground">
+                        <div className="w-4 h-4 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
+                        <span>{lang === "pt" ? "A carregar verificação de segurança..." : "Loading security verification..."}</span>
+                      </div>
+                    ) : (
+                      <div
+                        id={hcaptchaElId}
+                        className="h-captcha"
+                        data-sitekey={hcaptchaSitekey}
+                        data-callback="__imoHarmoniaOnHcaptchaVerified"
+                        data-expired-callback="__imoHarmoniaOnHcaptchaExpired"
+                      />
+                    )}
 
                     <div className="flex flex-col sm:flex-row items-start gap-4">
                       <Button

@@ -1,0 +1,8 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "imoharmonia"
+main = ".open-next/server-functions/index.mjs"
+compatibility_date = "2025-07-28"
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
